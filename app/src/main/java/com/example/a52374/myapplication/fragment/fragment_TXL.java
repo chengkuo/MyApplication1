@@ -1,5 +1,6 @@
-﻿package com.example.a52374.myapplication.fragment;
+package com.example.a52374.myapplication.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import  com.example.a52374.myapplication.R;
+
+import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.mybean.Bean_TXL;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.friend.FriendService;
@@ -21,19 +23,18 @@ import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import java.util.ArrayList;
 
 /**
- * Created by a452542253 on 2016/11/15.
+ * Created by 52374 on 2016/11/16.
  */
-
-public class fragment_TXL extends Fragment {
+public class fragment_TXL extends Fragment{
     private String[] xitong = {"验证提醒", "讨论组", "高级群", "黑名单", "我的电脑"};
     private int[] xitongid = {R.drawable.icon_verify_remind, R.drawable.ic_secretary, R.drawable.ic_advanced_team, R.drawable.ic_black_list, R.drawable.ic_my_computer};
     private ListView lv_xitong;
     private ArrayList<Bean_TXL> data = new ArrayList<>();
     private MyAdapter adapter;
-
+    private Context context;
     private ListView lv_haoyou;
-    private  ArrayList<String> list;//所有好友的账号
-    private ArrayList<NimUserInfo> data_haoyou ;//所有好友
+    private  ArrayList<String> list=new ArrayList<>();//所有好友的账号
+    private ArrayList<NimUserInfo> data_haoyou =new ArrayList<>();//所有好友
     private MyAdapter_haoyou adapter_haoyou;
 
     @Nullable
@@ -45,6 +46,7 @@ public class fragment_TXL extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context=getActivity();
         initView(view);
         //初始化系统的listview中的数据
         initData();
@@ -59,7 +61,7 @@ public class fragment_TXL extends Fragment {
         lv_haoyou.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+
             }
         });
 
@@ -67,6 +69,7 @@ public class fragment_TXL extends Fragment {
 
     private void initAdapter_haoyou() {
         adapter_haoyou = new MyAdapter_haoyou();
+
         lv_haoyou.setAdapter(adapter_haoyou);
     }
 
@@ -74,8 +77,9 @@ public class fragment_TXL extends Fragment {
       /*  for (int i = 0; i < 10; i++) {
             data_haoyou.add("item   " + i);
         }*/
-       list = (ArrayList<String>) NIMClient.getService(FriendService.class).getFriendAccounts(); // 获取所有好友帐号
-        data_haoyou = (ArrayList<NimUserInfo>) NIMClient.getService(UserService.class).getUserInfoList(list); // 获取所有好友用户资料
+        list .addAll ( NIMClient.getService(FriendService.class).getFriendAccounts()); // 获取所有好友帐号
+        if(list.size()>0){
+        data_haoyou .addAll( NIMClient.getService(UserService.class).getUserInfoList(list)) ; }// 获取所有好友用户资料
     }
 
     private void initAdapter() {
@@ -86,7 +90,7 @@ public class fragment_TXL extends Fragment {
     private void initData() {
 
 
-          for (int i = 0; i < xitongid.length; i++) {
+        for (int i = 0; i < xitongid.length; i++) {
             data.add(new Bean_TXL(xitong[i], xitongid[i]));
         }
     }
@@ -117,7 +121,7 @@ public class fragment_TXL extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.txl_lv_item, parent, false);
+                convertView = LayoutInflater.from(context).inflate(R.layout.txl_lv_item, parent, false);
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             } else {
@@ -130,7 +134,7 @@ public class fragment_TXL extends Fragment {
         }
 
 
-        public class ViewHolder {
+        class ViewHolder {
             ImageView iv;
             TextView tv;
 
@@ -163,7 +167,7 @@ public class fragment_TXL extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.txl_lv_item, parent, false);
+                convertView = LayoutInflater.from(context).inflate(R.layout.txl_lv_item, parent, false);
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             }else {
@@ -174,7 +178,7 @@ public class fragment_TXL extends Fragment {
             return convertView;
         }
 
-        public class ViewHolder {
+        class ViewHolder {
             public ImageView mIvTouxiang;
             public TextView mTvName;
 
@@ -184,5 +188,10 @@ public class fragment_TXL extends Fragment {
             }
 
         }
+    }
+
+    public void change(NimUserInfo userInfo){
+        data_haoyou.add(userInfo);
+        adapter_haoyou.notifyDataSetChanged();
     }
 }

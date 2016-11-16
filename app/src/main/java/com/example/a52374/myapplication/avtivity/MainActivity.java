@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Fragment> list=new ArrayList<>();
     private Mainadpter mainadpter;
     private FragmentManager manager;
+    private fragment_TXL fragment1;//通讯界面
   //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
   //  private SystemMessage message;           //接收 好友验证通知 的信息
    // private     AddFriendNotify addfn;        //好友通知对象
@@ -76,12 +80,18 @@ public class MainActivity extends AppCompatActivity {
                        AlertDialog.Builder ab=new AlertDialog.Builder(MainActivity.this)
                                .setTitle(attachData.getAccount()+"请求加你为好友")
                                .setMessage(message.getContent());
-                       ab.show();
+
                       ab.setPositiveButton("同意", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
-                               NIMClient.getService(FriendService.class).ackAddFriendRequest(attachData.getAccount(), true); // 通过对方的好友请求
-
+                               NIMClient.getService(FriendService.class).ackAddFriendRequest(attachData.getAccount(), true);// 通过对方的好友请求
+                               Log.i("tmd","111111111");
+                               NimUserInfo user = NIMClient.getService(UserService.class).getUserInfo(attachData.getAccount());
+                               if(user!=null){
+                               fragment1.change(user);}
+                               else{
+                                   Log.i("tmd","222222");
+                               }
 
                                 dialog.dismiss();
                            }
@@ -95,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                dialog.dismiss();
                            }
                        });
+                       ab.show();
                    }
                }
            }
@@ -129,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     private void initdata() {
         Session  fragment=new Session();
         list.add(fragment);
-        fragment_TXL fragment1=new fragment_TXL();
+      fragment1=new fragment_TXL();
         list.add(fragment1);
         Live fragment2=new Live();
         list.add(fragment2);
