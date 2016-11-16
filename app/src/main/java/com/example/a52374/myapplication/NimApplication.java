@@ -24,6 +24,14 @@ public class NimApplication extends Application {
 
 
 
+
+
+
+
+
+
+
+
     @Override
     public void onCreate() {
         // ... your codes
