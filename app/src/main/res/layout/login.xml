@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="账号:"
+        android:id="@+id/lgtv1"
+        android:textSize="25sp"
+        android:layout_marginTop="107dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lget1"
+        android:layout_alignBottom="@+id/lgtv1"
+        android:layout_toRightOf="@+id/lgtv1"
+        android:layout_toEndOf="@+id/lgtv1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="密码:"
+        android:textSize="25sp"
+        android:id="@+id/lgtv2"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/lgtv1"
+        android:layout_alignStart="@+id/lgtv1" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lget2"
+        android:layout_alignBottom="@+id/lgtv2"
+        android:layout_toRightOf="@+id/lgtv2"
+        android:layout_toEndOf="@+id/lgtv2"
+        android:clickable="false"
+        android:inputType="textPassword" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:id="@+id/but_login"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/lgtv2"
+        android:layout_alignStart="@+id/lgtv2"
+        android:layout_marginBottom="78dp"
+        android:onClick="click"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注册"
+        android:id="@+id/but_zhuce"
+        android:layout_alignTop="@+id/but_login"
+        android:layout_alignRight="@+id/lget2"
+        android:layout_alignEnd="@+id/lget2"
+        android:layout_marginRight="50dp"
+        android:layout_marginEnd="50dp" />
+</RelativeLayout>

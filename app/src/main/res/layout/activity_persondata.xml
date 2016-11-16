@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#c3c2ea"
+    tools:context=".avtivity.PersondataActivity">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:id="@+id/pdiv1"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12345"
+        android:id="@+id/pdname"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/pdiv1"
+        android:layout_toEndOf="@+id/pdiv1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="账号:aaa"
+        android:textSize="18sp"
+        android:id="@+id/pdaccount"
+        android:layout_below="@+id/pdname"
+        android:layout_alignLeft="@+id/pdname"
+        android:layout_alignStart="@+id/pdname"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#a39191"
+        android:id="@+id/pdtv1"
+        android:layout_below="@+id/pdiv1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="备注名"
+
+        android:id="@+id/pdtv2"
+        android:textSize="30sp"
+        android:layout_below="@+id/pdtv1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#a39191"
+        android:id="@+id/pdtv3"
+        android:layout_below="@+id/pdtv2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="黑名单"
+        android:id="@+id/pdtv4"
+        android:textSize="30sp"
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="消息提醒"
+        android:id="@+id/pdtv5"
+        android:textSize="30sp"
+         android:layout_marginTop="10dp"
+        android:layout_below="@+id/pdtv6"
+        android:layout_alignLeft="@+id/pdtv4"
+        android:layout_alignStart="@+id/pdtv4" />
+
+    <TextView
+        android:background="#a39191"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        android:id="@+id/pdtv6"
+        android:layout_below="@+id/pdtv4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#a39191"
+        android:id="@+id/pdtv7"
+        android:layout_below="@+id/pdtv5"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:onClick="click"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="聊天"
+        android:textSize="25sp"
+        android:id="@+id/pdbut1"
+        android:layout_below="@+id/pdtv7"
+        android:background="#253cbe"
+       />
+
+    <Button
+        android:onClick="click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="加为好友"
+        android:textSize="25sp"
+        android:background="#253cbe"
+        android:id="@+id/pdbut2"
+        android:layout_below="@+id/pdbut1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>
