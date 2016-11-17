@@ -59,6 +59,9 @@ public class ChatRoomHelper {
 
 
 
+
+
+
     private Map<String, Map<String, ChatRoomMember>> cache = new HashMap<>();
 
     private List<RoomMemberChangedObserver> roomMemberChangedObservers = new ArrayList<>();
