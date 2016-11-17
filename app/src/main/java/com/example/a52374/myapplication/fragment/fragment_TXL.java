@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -230,8 +231,10 @@ public class fragment_TXL extends Fragment{
    // 删除好友更新页面
     public static void delete(NimUserInfo user){
          for(int i=0;i<data_haoyou.size()-1;i++){
-              if(user.getAccount()==data_haoyou.get(i).getAccount()){
+              if(user.getAccount().equalsIgnoreCase(data_haoyou.get(i).getAccount())){
                   data_haoyou.remove(i);
+                  Log.i("tmd","删除好友成功 ") ;
+                  break;
               }
           }
         adapter_haoyou.notifyDataSetChanged();
