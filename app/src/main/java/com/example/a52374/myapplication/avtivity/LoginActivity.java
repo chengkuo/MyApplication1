@@ -39,6 +39,8 @@ public class LoginActivity extends Activity {
         switch (view.getId()){
             case R.id.but_login:
                doLogin();
+
+                finish();
                 break;
         }
     }

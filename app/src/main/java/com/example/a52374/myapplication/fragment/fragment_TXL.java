@@ -18,11 +18,14 @@ import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.avtivity.DuiHuaActivity;
 import com.example.a52374.myapplication.mybean.Bean_TXL;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 52374 on 2016/11/16.
@@ -63,7 +66,7 @@ public class fragment_TXL extends Fragment{
         lv_haoyou.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DuiHuaActivity.class);
+                Intent intent = new Intent(context, DuiHuaActivity.class);
                 intent.putExtra("account",data_haoyou.get(position).getAccount());
                 startActivity(intent);
 
@@ -198,7 +201,27 @@ public class fragment_TXL extends Fragment{
 
     public void change(String account)
     {
-        initData();
+        ArrayList<String> accounts=new ArrayList<>();
+        accounts.add(account);
+        NIMClient.getService(UserService.class).fetchUserInfo(accounts)
+                .setCallback(new RequestCallback<List<NimUserInfo>>() {
+                    @Override
+                    public void onSuccess(List<NimUserInfo> nimUserInfos) {
+                         NimUserInfo user=nimUserInfos.get(0);
+                        data_haoyou.add(user);
+                    }
+
+                    @Override
+                    public void onFailed(int i) {
+
+                    }
+
+                    @Override
+                    public void onException(Throwable throwable) {
+
+                    }
+
+                     });
         adapter_haoyou.notifyDataSetChanged();
     }
 }

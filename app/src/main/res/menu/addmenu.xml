@@ -4,5 +4,9 @@
     <item android:id="@+id/itemadd"
            android:showAsAction="never"
           android:title="添加好友"></item>
+    <item  android:id="@+id/itemback"
+             android:showAsAction="never"
+        android:title="注销"></item>
+
 
 </menu>

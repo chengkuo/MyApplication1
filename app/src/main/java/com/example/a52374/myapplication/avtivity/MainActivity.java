@@ -26,6 +26,7 @@ import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
+import com.netease.nimlib.sdk.friend.model.Friend;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_AGREE_ADD_FRIEND) {
                        // 对方通过了你的好友验证请求
                        Toast.makeText(MainActivity.this,attachData.getAccount()+"通过了你的加好友请求",Toast.LENGTH_SHORT).show();
+                      fragment1.change(attachData.getAccount());
+
                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_REJECT_ADD_FRIEND) {
                        // 对方拒绝了你的好友验证请求
                        Toast.makeText(MainActivity.this,attachData.getAccount()+"拒绝了你的好友请求",Toast.LENGTH_SHORT).show();
@@ -130,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                                NIMClient.getService(FriendService.class).ackAddFriendRequest(attachData.getAccount(), true);// 通过对方的好友请求
                                Log.i("tmd","111111111");
                                //NimUserInfo user = NIMClient.getService(UserService.class).getUserInfo(attachData.getAccount());
+
                                 fragment1.change(attachData.getAccount());
 
                                 dialog.dismiss();
@@ -163,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
          switch (item.getItemId()){
              case R.id.itemadd:
                  startActivity(new Intent(MainActivity.this,AddfriendActivity.class));
+                 break;
+             case R.id.itemback:
+                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                 finish();
                  break;
 
          }
