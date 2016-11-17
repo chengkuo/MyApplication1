@@ -107,7 +107,6 @@
 
         <activity android:name=".avtivity.AddfriendActivity" />
         <activity android:name=".avtivity.PersondataActivity"></activity>
-        <activity android:name=".avtivity.DuiHuaActivity"/>
     </application>
 
 </manifest>
