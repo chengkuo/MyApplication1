@@ -37,18 +37,33 @@ import static android.R.id.list;
 public class DuiHuaActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView rv;
-    private ArrayList<MsgBean> users = new ArrayList<>();
+    private static ArrayList<MsgBean> users = new ArrayList<>();
     private Button mButSendMsg;
     private EditText et_msg;
     private MyAdapter adapter;
-    private NimUserInfo user;
-    private Observer<List<IMMessage>> incomingMessageObserver;
+
+    Observer<List<IMMessage>> incomingMessageObserver  =
+        new Observer<List<IMMessage>>() {
+            @Override
+            public void onEvent(List<IMMessage> messages) {
+                // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+                Log.i("tmd", "onEvent: 收到消息");
+                String account = messages.get(0).getFromAccount();
+                StringBuffer sb = new StringBuffer();
+                for (IMMessage  meseg:messages) {
+                    sb.append(meseg.getContent());
+                }
+                Log.i("tmd", "onEvent: 收到消息"+sb.toString());
+                users.add(new MsgBean(account,sb.toString()));
+                adapter.notifyDataSetChanged();
+            }
+        };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dui_hua);
-//        user = getIntent().getParcelableExtra("user");
         Log.i("tmd", " 取出account ：onCreate: ");
         initView();
 
@@ -56,7 +71,6 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
 
-        initData();
 
         initAdapter();
     }
@@ -73,23 +87,6 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         rv.setAdapter(adapter);
     }
 
-    private void initData() {
-        incomingMessageObserver =
-                new Observer<List<IMMessage>>() {
-                    @Override
-                    public void onEvent(List<IMMessage> messages) {
-                        // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
-                        String account = messages.get(0).getFromAccount();
-                        StringBuffer sb = new StringBuffer();
-                        for (int i = 0; i < messages.size(); i++) {
-                            sb.append(messages.get(i).getContent());
-                        }
-                        users.add(new MsgBean(account,sb.toString()));
-                        adapter.notifyDataSetChanged();
-                    }
-                };
-    }
-
     private void initView() {
         rv = (RecyclerView) findViewById(R.id.rlv);
         mButSendMsg = (Button) findViewById(R.id.but_sendMsg);
@@ -104,7 +101,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                 if (!et_msg.getText().toString().equals("")){
                     String account = getIntent().getStringExtra("account");
                     String msg = et_msg.getText().toString();
-                    users.add(new MsgBean(account,msg));
+                    users.add(new MsgBean("",msg));
                     sendMsg(account,msg);
                     Log.i("tmd", "onClick: "+account);
 
