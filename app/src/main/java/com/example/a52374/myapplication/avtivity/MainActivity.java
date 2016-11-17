@@ -35,6 +35,8 @@ import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 
+
+//主界面
 public class MainActivity extends AppCompatActivity {
     private ViewPager vp;
     private TabLayout tab;
@@ -111,7 +113,10 @@ public class MainActivity extends AppCompatActivity {
                    // 针对不同的事件做处理
                    if (attachData.getEvent() == AddFriendNotify.Event.RECV_ADD_FRIEND_DIRECT) {
                        // 对方直接添加你为好友
-                       Toast.makeText(MainActivity.this,"请求加好友",Toast.LENGTH_SHORT).show();
+                       Toast.makeText(MainActivity.this,attachData.getAccount()+"添加你为好友了",Toast.LENGTH_SHORT).show();
+                       NIMClient.getService(FriendService.class).ackAddFriendRequest(attachData.getAccount(), true);// 通过对方的好友请求
+                       fragment1.change(attachData.getAccount());
+
                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_AGREE_ADD_FRIEND) {
                        // 对方通过了你的好友验证请求
                        Toast.makeText(MainActivity.this,attachData.getAccount()+"通过了你的加好友请求",Toast.LENGTH_SHORT).show();

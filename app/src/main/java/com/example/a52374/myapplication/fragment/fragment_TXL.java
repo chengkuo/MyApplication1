@@ -3,9 +3,9 @@ package com.example.a52374.myapplication.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.avtivity.DuiHuaActivity;
+import com.example.a52374.myapplication.avtivity.PersondataActivity;
 import com.example.a52374.myapplication.mybean.Bean_TXL;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -40,8 +41,8 @@ public class fragment_TXL extends Fragment{
     private Context context;
     private ListView lv_haoyou;
     private  ArrayList<String> list=new ArrayList<>();//所有好友的账号
-    private ArrayList<NimUserInfo> data_haoyou =new ArrayList<>();//所有好友
-    private MyAdapter_haoyou adapter_haoyou;
+    private static ArrayList<NimUserInfo> data_haoyou =new ArrayList<>();//所有好友
+    private static MyAdapter_haoyou adapter_haoyou;
 
     @Nullable
     @Override
@@ -67,9 +68,9 @@ public class fragment_TXL extends Fragment{
         lv_haoyou.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, DuiHuaActivity.class);
-                Log.i("tmd", "好友点击事件：onItemClick: "+data_haoyou.get(position).getAccount());
-                intent.putExtra("account",data_haoyou.get(position).getAccount());
+                Intent intent = new Intent(context,PersondataActivity.class);
+                intent.putExtra("user",data_haoyou.get(position));
+                //intent.putExtra("account",data_haoyou.get(position).getAccount());
                 startActivity(intent);
 
 
@@ -201,7 +202,7 @@ public class fragment_TXL extends Fragment{
         }
     }
 
-    public void change(String account)
+    public static   void change(String account)
     {
         ArrayList<String> accounts=new ArrayList<>();
         accounts.add(account);
@@ -224,6 +225,11 @@ public class fragment_TXL extends Fragment{
                     }
 
                      });
+        adapter_haoyou.notifyDataSetChanged();
+    }
+
+    public static void delete(NimUserInfo user){
+          data_haoyou.remove(user);
         adapter_haoyou.notifyDataSetChanged();
     }
 }
