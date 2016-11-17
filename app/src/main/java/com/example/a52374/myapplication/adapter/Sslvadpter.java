@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class Sslvadpter extends BaseAdapter {
     private ArrayList<RecentContact> list;
-    private Context context;
+    private  Context context;
     private RecentContact rc;
 
     public Sslvadpter(ArrayList<RecentContact> list , Context Context){

@@ -201,7 +201,7 @@ public class fragment_TXL extends Fragment{
 
         }
     }
-
+   // 添加好友后更新页面
     public static   void change(String account)
     {
         ArrayList<String> accounts=new ArrayList<>();
@@ -227,9 +227,13 @@ public class fragment_TXL extends Fragment{
                      });
         adapter_haoyou.notifyDataSetChanged();
     }
-
+   // 删除好友更新页面
     public static void delete(NimUserInfo user){
-          data_haoyou.remove(user);
+         for(int i=0;i<data_haoyou.size()-1;i++){
+              if(user.getAccount()==data_haoyou.get(i).getAccount()){
+                  data_haoyou.remove(i);
+              }
+          }
         adapter_haoyou.notifyDataSetChanged();
     }
 }

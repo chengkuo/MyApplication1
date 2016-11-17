@@ -40,9 +40,15 @@ public class Session extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context=context;
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         context=getActivity();
+         //context=getContext();
         initview(view);
 //        initdata();
 //        initadapter();
