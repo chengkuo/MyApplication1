@@ -21,6 +21,9 @@ import com.example.a52374.myapplication.fragment.Session;
 import com.example.a52374.myapplication.fragment.fragment_TXL;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Fragment> list=new ArrayList<>();
     private Mainadpter mainadpter;
     private FragmentManager manager;
+    private long last = 0;
     private fragment_TXL fragment1;//通讯界面
   //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
   //  private SystemMessage message;           //接收 好友验证通知 的信息
@@ -51,7 +55,46 @@ public class MainActivity extends AppCompatActivity {
         initdata();
         initadapter();
         registerSystemObserver(true);
+        statechange();
+        TongBustate();
     }
+
+   //监听用户状态
+   public void statechange() {
+       NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
+               new Observer<StatusCode>() {
+                   public void onEvent(StatusCode status) {
+                       Log.i("tmd", "用户当前状态  User status changed to: " + status);
+                       if (status.toString().equals("NET_BROKEN")) {
+                           startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                           finish();
+                       }
+                       if (status.wontAutoLogin()) {
+                           // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
+                           Toast.makeText(MainActivity.this, "登录失败请重新登录", Toast.LENGTH_SHORT).show();
+                           startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                           finish();
+                       }
+                   }
+               }, true);
+   }
+    public void TongBustate() {
+        NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(new Observer<LoginSyncStatus>() {
+            @Override
+            public void onEvent(LoginSyncStatus status) {
+                if (status == LoginSyncStatus.BEGIN_SYNC) {
+//                    LogUtil.i(TAG, "login sync data begin");
+                    Log.i("tmd", "onEvent: login sync data begin");
+                } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
+//                    LogUtil.i(TAG, "login sync data completed");
+                    Log.i("tmd", "onEvent: login sync data completed");
+                }
+            }
+        }, true);
+    }
+
+
+
 
     private void registerSystemObserver(boolean b) {
 
@@ -86,12 +129,8 @@ public class MainActivity extends AppCompatActivity {
                            public void onClick(DialogInterface dialog, int which) {
                                NIMClient.getService(FriendService.class).ackAddFriendRequest(attachData.getAccount(), true);// 通过对方的好友请求
                                Log.i("tmd","111111111");
-                               NimUserInfo user = NIMClient.getService(UserService.class).getUserInfo(attachData.getAccount());
-                               if(user!=null){
-                               fragment1.change(user);}
-                               else{
-                                   Log.i("tmd","222222");
-                               }
+                               //NimUserInfo user = NIMClient.getService(UserService.class).getUserInfo(attachData.getAccount());
+                                fragment1.change(attachData.getAccount());
 
                                 dialog.dismiss();
                            }
@@ -161,6 +200,16 @@ public class MainActivity extends AppCompatActivity {
        tab= (TabLayout) findViewById(R.id.maintb);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        long during = currentTime - last;
+        if (during < 2000) {
+            finish();
+        } else {
+            Toast.makeText(MainActivity.this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+        }
+        last = currentTime;
+    }
 
 }

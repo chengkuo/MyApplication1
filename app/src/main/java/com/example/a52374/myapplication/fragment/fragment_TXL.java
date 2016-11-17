@@ -1,6 +1,7 @@
 package com.example.a52374.myapplication.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.a52374.myapplication.R;
+import com.example.a52374.myapplication.avtivity.DuiHuaActivity;
 import com.example.a52374.myapplication.mybean.Bean_TXL;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.friend.FriendService;
@@ -61,6 +63,10 @@ public class fragment_TXL extends Fragment{
         lv_haoyou.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), DuiHuaActivity.class);
+                intent.putExtra("account",data_haoyou.get(position).getAccount());
+                startActivity(intent);
+
 
             }
         });
@@ -190,8 +196,9 @@ public class fragment_TXL extends Fragment{
         }
     }
 
-    public void change(NimUserInfo userInfo){
-        data_haoyou.add(userInfo);
+    public void change(String account)
+    {
+        initData();
         adapter_haoyou.notifyDataSetChanged();
     }
 }

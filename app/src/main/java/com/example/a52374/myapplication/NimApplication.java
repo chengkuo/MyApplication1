@@ -5,8 +5,11 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.example.a52374.myapplication.avtivity.WelcomeActivity;
+import com.example.a52374.myapplication.datamanagement.DemoCache;
+import com.example.a52374.myapplication.datamanagement.Preferences;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -25,6 +28,7 @@ public class NimApplication extends Application {
     public void onCreate() {
         // ... your codes
         super.onCreate();
+        DemoCache.setContext(this);// 设置 上下文 自动登录必要要用
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         NIMClient.init(this, loginInfo(), options());
 
@@ -102,8 +106,16 @@ public class NimApplication extends Application {
     }
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
-    private LoginInfo loginInfo() {
-        return null;
-    }
+    public LoginInfo loginInfo() {
+        String account = Preferences.getUserAccount();
+        String token = Preferences.getUserToken();
 
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
+           DemoCache.setAccount(account.toLowerCase());
+            return new LoginInfo(account, token);
+        } else {
+            return null;
+        }
+
+    }
 }

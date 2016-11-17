@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.a52374.myapplication.R;
+import com.example.a52374.myapplication.datamanagement.DemoCache;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -21,6 +22,7 @@ import java.util.prefs.Preferences;
  */
 public class LoginActivity extends Activity {
     private EditText ed1,ed2;
+    private String account,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +44,17 @@ public class LoginActivity extends Activity {
     }
      // 登录的方法
     public void doLogin() {
-        LoginInfo info = new LoginInfo(ed1.getText().toString().toLowerCase(),ed2.getText().toString()); // config...
+        account=ed1.getText().toString().toLowerCase();
+        password=ed2.getText().toString();
+        LoginInfo info = new LoginInfo(account,password); // config...
         RequestCallback<LoginInfo> callback =
                 new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo loginInfo) {
                         Log.i("tmd","登陆成功!!!!! ");
+                        //DemoCache.setContext(LoginActivity.this);
+                        com.example.a52374.myapplication.datamanagement.Preferences.saveUserAccount(account);
+                        com.example.a52374.myapplication.datamanagement.Preferences.saveUserToken(password);
 
                          startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
