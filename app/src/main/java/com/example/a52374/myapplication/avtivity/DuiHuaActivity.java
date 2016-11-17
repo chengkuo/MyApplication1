@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,18 @@ import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.mybean.MsgBean;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
-import com.netease.nimlib.sdk.chatroom.ChatRoomService;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
-import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.id.list;
 
 public class DuiHuaActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,17 +39,30 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private Button mButSendMsg;
     private EditText et_msg;
     private MyAdapter adapter;
+    private String account;
+    private Observer<List<IMMessage>> incomingMessageObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dui_hua);
-
+        account = getIntent().getStringExtra("account");
+        Log.i("tmd", " 取出account ：onCreate: "+account);
         initView();
         rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, true);
+
         initData();
 
         initAdapter();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, false);
     }
 
     private void initAdapter() {
@@ -52,19 +71,20 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initData() {
-        Observer<List<ChatRoomMessage>> incomingChatRoomMsg = new Observer<List<ChatRoomMessage>>() {
-            @Override
-            public void onEvent(List<ChatRoomMessage> messages) {
-                // 处理新收到的消息
-                String account = messages.get(messages.size() - 1).getFromAccount();
-                String msg = messages.get(messages.size() - 1).getContent();
-                msglist.add(new MsgBean(account, msg));
-                adapter.notifyDataSetChanged();
-            }
-        };
-
-        NIMClient.getService(ChatRoomServiceObserver.class)
-                .observeReceiveMessage(incomingChatRoomMsg, true);
+        Observer<List<IMMessage>> incomingMessageObserver =
+                new Observer<List<IMMessage>>() {
+                    @Override
+                    public void onEvent(List<IMMessage> messages) {
+                        // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+                        String account = messages.get(0).getFromAccount();
+                        StringBuffer sb = new StringBuffer();
+                        for (int i = 0; i < messages.size(); i++) {
+                            sb.append(messages.get(i).getContent());
+                        }
+                        msglist.add(new MsgBean(account,sb.toString()));
+                        adapter.notifyDataSetChanged();
+                    }
+                };
     }
 
     private void initView() {
@@ -81,7 +101,8 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                 if (!et_msg.getText().toString().equals("")){
 
                     msglist.add(new MsgBean("",et_msg.getText().toString()));
-                    sendMsg(getIntent().getStringExtra("account"),et_msg.getText().toString());
+                    sendMsg(account,et_msg.getText().toString());
+                    Log.i("tmd", "onClick: "+account);
                     et_msg.setText("");
                     adapter.notifyDataSetChanged();
                 }else {
@@ -162,13 +183,34 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void sendMsg(String sendID,String msg){
-        // 创建文本消息
-        ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(
-                sendID, // 聊天室id
-                msg // 文本内容
+
+        IMMessage message = MessageBuilder.createTextMessage(
+          sendID,
+                SessionTypeEnum.P2P,
+                msg
         );
+        // 创建文本消息
+//        ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(
+//                sendID, // 聊天室id
+//                msg // 文本内容
+//        );
 
 // 发送消息。如果需要关心发送结果，可设置回调函数。发送完成时，会收到回调。如果失败，会有具体的错误码。
-//        NIMClient.getService(ChatRoomService.class).sendMessage();
+        NIMClient.getService(MsgService.class).sendMessage(message,false).setCallback(new RequestCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(DuiHuaActivity.this,"消息发送成功！",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Toast.makeText(DuiHuaActivity.this,"发送失败！",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        });
     }
 }
