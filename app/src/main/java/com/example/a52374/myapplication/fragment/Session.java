@@ -16,9 +16,12 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.uinfo.constant.GenderEnum;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 52374 on 2016/11/14.
@@ -59,6 +62,7 @@ public class Session extends Fragment {
                         // recents参数即为最近联系人列表（最近会话列表）
                         Log.i("tmd",list.toString()+"!!!!!!!!!!!!");
                         list.addAll(recents);
+
                         adpter.notifyDataSetChanged();
                     }
                 });
@@ -69,4 +73,8 @@ public class Session extends Fragment {
         lv= (ListView) view.findViewById(R.id.sslv);
 
     }
+     public static void change(){
+
+     }
+
 }

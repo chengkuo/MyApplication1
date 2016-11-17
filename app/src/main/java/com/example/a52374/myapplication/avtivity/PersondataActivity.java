@@ -56,8 +56,9 @@ public class PersondataActivity extends AppCompatActivity {
     public void click(View view) {
        switch (view.getId()){
            case R.id.pdbut1:
-
-
+              Intent  i=new Intent(PersondataActivity.this,DuiHuaActivity.class);
+             i.putExtra("account",user.getAccount());
+               startActivity(i);
                break;
            case R.id.pdbut2:
 

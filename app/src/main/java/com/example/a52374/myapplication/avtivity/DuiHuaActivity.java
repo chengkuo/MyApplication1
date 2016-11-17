@@ -71,7 +71,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initData() {
-        Observer<List<IMMessage>> incomingMessageObserver =
+     incomingMessageObserver =
                 new Observer<List<IMMessage>>() {
                     @Override
                     public void onEvent(List<IMMessage> messages) {
