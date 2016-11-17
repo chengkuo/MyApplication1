@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initdata() {
         Session  fragment=new Session();
+
         list.add(fragment);
       fragment1=new fragment_TXL();
         list.add(fragment1);

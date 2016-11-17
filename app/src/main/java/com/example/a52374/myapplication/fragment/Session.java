@@ -44,8 +44,8 @@ public class Session extends Fragment {
         super.onViewCreated(view, savedInstanceState);
          context=getActivity();
         initview(view);
-        initdata();
-        initadapter();
+//        initdata();
+//        initadapter();
     }
 
     private void initadapter() {

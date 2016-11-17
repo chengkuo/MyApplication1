@@ -26,6 +26,8 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,20 +37,21 @@ import static android.R.id.list;
 public class DuiHuaActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView rv;
-    private ArrayList<MsgBean> msglist = new ArrayList<>();
+    private ArrayList<MsgBean> users = new ArrayList<>();
     private Button mButSendMsg;
     private EditText et_msg;
     private MyAdapter adapter;
-    private String account;
+    private NimUserInfo user;
     private Observer<List<IMMessage>> incomingMessageObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dui_hua);
-        account = getIntent().getStringExtra("account");
-        Log.i("tmd", " 取出account ：onCreate: "+account);
+//        user = getIntent().getParcelableExtra("user");
+        Log.i("tmd", " 取出account ：onCreate: ");
         initView();
+
         rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
@@ -71,7 +74,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initData() {
-     incomingMessageObserver =
+        incomingMessageObserver =
                 new Observer<List<IMMessage>>() {
                     @Override
                     public void onEvent(List<IMMessage> messages) {
@@ -81,7 +84,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                         for (int i = 0; i < messages.size(); i++) {
                             sb.append(messages.get(i).getContent());
                         }
-                        msglist.add(new MsgBean(account,sb.toString()));
+                        users.add(new MsgBean(account,sb.toString()));
                         adapter.notifyDataSetChanged();
                     }
                 };
@@ -99,10 +102,12 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.but_sendMsg:
                 if (!et_msg.getText().toString().equals("")){
-
-                    msglist.add(new MsgBean("",et_msg.getText().toString()));
-                    sendMsg(account,et_msg.getText().toString());
+                    String account = getIntent().getStringExtra("account");
+                    String msg = et_msg.getText().toString();
+                    users.add(new MsgBean(account,msg));
+                    sendMsg(account,msg);
                     Log.i("tmd", "onClick: "+account);
+
                     et_msg.setText("");
                     adapter.notifyDataSetChanged();
                 }else {
@@ -117,7 +122,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public int getItemViewType(int position) {
-            String str = msglist.get(position).getAccount();
+            String str = users.get(position).getAccount();
             if (str.equals("")){
                 return 0;
             }else {
@@ -141,7 +146,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                MsgBean mb = msglist.get(position);
+                MsgBean mb = users.get(position);
             switch (getItemViewType(position)){
                 case 0:
                     MyHolder_to holder_to = (MyHolder_to) holder;
@@ -158,7 +163,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public int getItemCount() {
-            return msglist.size();
+            return users.size();
         }
 
         class MyHolder_from extends RecyclerView.ViewHolder {
