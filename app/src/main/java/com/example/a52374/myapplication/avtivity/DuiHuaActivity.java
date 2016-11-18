@@ -1,9 +1,13 @@
 package com.example.a52374.myapplication.avtivity;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +28,10 @@ import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
@@ -41,6 +47,8 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private Button mButSendMsg;
     private EditText et_msg;
     private MyAdapter adapter;
+    private TextView tv_duixiang;
+    private String account;
 
     Observer<List<IMMessage>> incomingMessageObserver  =
         new Observer<List<IMMessage>>() {
@@ -48,14 +56,17 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             public void onEvent(List<IMMessage> messages) {
                 // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
                 Log.i("tmd", "onEvent: 收到消息");
-                String account = messages.get(0).getFromAccount();
+                String account_from = messages.get(messages.size()-1).getFromAccount();
                 StringBuffer sb = new StringBuffer();
                 for (IMMessage  meseg:messages) {
                     sb.append(meseg.getContent());
                 }
                 Log.i("tmd", "onEvent: 收到消息"+sb.toString());
-                users.add(new MsgBean(account,sb.toString()));
-                adapter.notifyDataSetChanged();
+                if (account_from.equals(account)){
+                    users.add(new MsgBean(account_from,sb.toString()));
+                    adapter.notifyDataSetChanged();
+                }
+
             }
         };
 
@@ -66,13 +77,22 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_dui_hua);
         Log.i("tmd", " 取出account ：onCreate: ");
         initView();
-
+        account = getIntent().getStringExtra("account");
+        tv_duixiang.setText(account);
         rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
 
-
         initAdapter();
+
+        if (account == null){
+            MsgBean mb = (MsgBean) getIntent().getSerializableExtra("MsgBean");
+            account = mb.getAccount();
+            tv_duixiang.setText(account);
+            users.add(mb);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
@@ -92,6 +112,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         mButSendMsg = (Button) findViewById(R.id.but_sendMsg);
         mButSendMsg.setOnClickListener(this);
         et_msg = (EditText) findViewById(R.id.et_msg);
+        tv_duixiang = (TextView) findViewById(R.id.tv_duixiang);
     }
 
     @Override
@@ -99,7 +120,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.but_sendMsg:
                 if (!et_msg.getText().toString().equals("")){
-                    String account = getIntent().getStringExtra("account");
+//                    String account = getIntent().getStringExtra("account");
                     String msg = et_msg.getText().toString();
                     users.add(new MsgBean("",msg));
                     sendMsg(account,msg);
@@ -215,4 +236,33 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+public  void changeSystemMsg(){
+
+    NIMClient.getService(SystemMessageObserver.class)
+            .observeReceiveSystemMsg(new Observer<SystemMessage>() {
+                @Override
+                public void onEvent(SystemMessage message) {
+//                    NimUserInfo
+                }
+            }, true);
+
+}
+    //判断当前Activity是否显示
+    private boolean isForeground(Context context, String className) {
+        if (context==null || TextUtils.isEmpty(className)) {
+            return false;
+            }
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list != null && list.size() > 0) {
+            ComponentName cpn = list.get(0).topActivity;
+
+            if (className.equals(cpn.getClassName())) {
+                return true;
+                }
+            }
+
+        return false;
+        }
 }

@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.example.a52374.myapplication.avtivity.DuiHuaActivity;
+import com.example.a52374.myapplication.avtivity.MainActivity;
 import com.example.a52374.myapplication.avtivity.WelcomeActivity;
 import com.example.a52374.myapplication.datamanagement.DemoCache;
 import com.example.a52374.myapplication.datamanagement.Preferences;
@@ -49,7 +51,7 @@ public class NimApplication extends Application {
 
         // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
-        //config.notificationEntrance = WelcomeActivity.class; // 点击通知栏跳转到该Activity
+        config.notificationEntrance = MainActivity.class; // 点击通知栏跳转到该Activity
         config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;
         // 呼吸灯配置
         config.ledARGB = Color.GREEN;

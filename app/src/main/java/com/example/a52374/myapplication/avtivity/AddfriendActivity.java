@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddfriendActivity extends AppCompatActivity {
-   private EditText et;
+    private EditText et;
     private  String account;
     private  ArrayList<String> accounts;
     @Override

@@ -15,6 +15,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_msg_to"
         android:text="12232213"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:background="#4483f1"
+
         android:layout_toLeftOf="@+id/iv_tx_to"
         android:layout_alignBottom="@+id/iv_tx_to"/>
 
