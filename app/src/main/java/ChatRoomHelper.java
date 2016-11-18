@@ -22,9 +22,7 @@ import java.util.Map;
  */
 
 public class ChatRoomHelper {
-    private static final int[] imageRes = {R.drawable.room_cover_36, R.drawable.room_cover_37, R.drawable.room_cover_49,
-            R.drawable.room_cover_50, R.drawable.room_cover_57, R.drawable.room_cover_58, R.drawable.room_cover_64,
-            R.drawable.room_cover_72};
+
 
     private static Map<String, Integer> roomCoverMap = new HashMap<>();
     private static int index = 0;

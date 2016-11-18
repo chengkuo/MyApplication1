@@ -44,7 +44,7 @@
         android:text="00"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
+        android:id="@+id/user_count"
         android:textColor="#fff"
         android:gravity="center_vertical"
         android:layout_alignBottom="@+id/nowchat_room"
