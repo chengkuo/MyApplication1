@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by 52374 on 2016/11/16.
  */
-public class fragment_TXL extends Fragment{
+public class Fragment_TXL extends Fragment{
     private String[] xitong = {"验证提醒", "讨论组", "高级群", "黑名单", "我的电脑"};
     private int[] xitongid = {R.drawable.icon_verify_remind, R.drawable.ic_secretary, R.drawable.ic_advanced_team, R.drawable.ic_black_list, R.drawable.ic_my_computer};
     private ListView lv_xitong;

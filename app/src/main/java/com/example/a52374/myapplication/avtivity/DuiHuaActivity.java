@@ -25,6 +25,7 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
+import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
@@ -49,26 +50,27 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private MyAdapter adapter;
     private TextView tv_duixiang;
     private String account;
+    private static String last_Account = "";
 
-    Observer<List<IMMessage>> incomingMessageObserver  =
-        new Observer<List<IMMessage>>() {
-            @Override
-            public void onEvent(List<IMMessage> messages) {
-                // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
-                Log.i("tmd", "onEvent: 收到消息");
-                String account_from = messages.get(messages.size()-1).getFromAccount();
-                StringBuffer sb = new StringBuffer();
-                for (IMMessage  meseg:messages) {
-                    sb.append(meseg.getContent());
-                }
-                Log.i("tmd", "onEvent: 收到消息"+sb.toString());
-                if (account_from.equals(account)){
-                    users.add(new MsgBean(account_from,sb.toString()));
-                    adapter.notifyDataSetChanged();
-                }
+    Observer<List<IMMessage>> incomingMessageObserver =
+            new Observer<List<IMMessage>>() {
+                @Override
+                public void onEvent(List<IMMessage> messages) {
+                    // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+                    Log.i("tmd", "onEvent: 收到消息");
+                    String account_from = messages.get(messages.size() - 1).getFromAccount();
+                    StringBuffer sb = new StringBuffer();
+                    for (IMMessage meseg : messages) {
+                        sb.append(meseg.getContent());
+                    }
+                    Log.i("tmd", "onEvent: 收到消息" + sb.toString());
+                    if (account_from.equals(account)) {
+                        users.add(new MsgBean(account_from, sb.toString()));
+                        adapter.notifyDataSetChanged();
+                    }
 
-            }
-        };
+                }
+            };
 
 
     @Override
@@ -79,13 +81,18 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         initView();
         account = getIntent().getStringExtra("account");
         tv_duixiang.setText(account);
-        rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        //设置与当前聊天对象的消息不在提醒
+//        MsgChange();
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
 
         initAdapter();
+        if (account==null){
+            getIntent().getParcelableArrayExtra("accounts");
+        }
 
-        if (account == null){
+        if (account == null) {
             MsgBean mb = (MsgBean) getIntent().getSerializableExtra("MsgBean");
             account = mb.getAccount();
             tv_duixiang.setText(account);
@@ -98,11 +105,15 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        last_Account = account;
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, false);
     }
 
     private void initAdapter() {
+        if (!last_Account.equals(account)){
+            users.clear();
+        }
         adapter = new MyAdapter();
         rv.setAdapter(adapter);
     }
@@ -119,17 +130,17 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.but_sendMsg:
-                if (!et_msg.getText().toString().equals("")){
+                if (!et_msg.getText().toString().equals("")) {
 //                    String account = getIntent().getStringExtra("account");
                     String msg = et_msg.getText().toString();
-                    users.add(new MsgBean("",msg));
-                    sendMsg(account,msg);
-                    Log.i("tmd", "onClick: "+account);
+                    users.add(new MsgBean("", msg));
+                    sendMsg(account, msg);
+                    Log.i("tmd", "onClick: " + account);
 
                     et_msg.setText("");
                     adapter.notifyDataSetChanged();
-                }else {
-                    Toast.makeText(DuiHuaActivity.this,"聊天内容不能为空！！！",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DuiHuaActivity.this, "聊天内容不能为空！！！", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -141,9 +152,9 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public int getItemViewType(int position) {
             String str = users.get(position).getAccount();
-            if (str.equals("")){
+            if (str.equals("")) {
                 return 0;
-            }else {
+            } else {
                 return 1;
             }
         }
@@ -151,12 +162,12 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RecyclerView.ViewHolder holder = null;
-            switch (viewType){
+            switch (viewType) {
                 case 0:
-                    holder = new MyHolder_to(LayoutInflater.from(DuiHuaActivity.this).inflate(R.layout.msg_item_to,parent,false));
+                    holder = new MyHolder_to(LayoutInflater.from(DuiHuaActivity.this).inflate(R.layout.msg_item_to, parent, false));
                     break;
                 case 1:
-                    holder = new MyHolder_from(LayoutInflater.from(DuiHuaActivity.this).inflate(R.layout.msg_item_from,parent,false));
+                    holder = new MyHolder_from(LayoutInflater.from(DuiHuaActivity.this).inflate(R.layout.msg_item_from, parent, false));
                     break;
             }
             return holder;
@@ -164,8 +175,8 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                MsgBean mb = users.get(position);
-            switch (getItemViewType(position)){
+            MsgBean mb = users.get(position);
+            switch (getItemViewType(position)) {
                 case 0:
                     MyHolder_to holder_to = (MyHolder_to) holder;
                     holder_to.iv.setImageResource(R.mipmap.ic_launcher);
@@ -194,9 +205,11 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                 tv = (TextView) itemView.findViewById(R.id.tv_msg_item);
             }
         }
+
         class MyHolder_to extends RecyclerView.ViewHolder {
-                ImageView iv;
-                TextView tv;
+            ImageView iv;
+            TextView tv;
+
             public MyHolder_to(View itemView) {
                 super(itemView);
                 iv = (ImageView) itemView.findViewById(R.id.iv_tx_to);
@@ -205,10 +218,10 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void sendMsg(String sendID,String msg){
+    public void sendMsg(String sendID, String msg) {
 
         IMMessage message = MessageBuilder.createTextMessage(
-          sendID,
+                sendID,
                 SessionTypeEnum.P2P,
                 msg
         );
@@ -219,15 +232,15 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 //        );
 
 // 发送消息。如果需要关心发送结果，可设置回调函数。发送完成时，会收到回调。如果失败，会有具体的错误码。
-        NIMClient.getService(MsgService.class).sendMessage(message,false).setCallback(new RequestCallback<Void>() {
+        NIMClient.getService(MsgService.class).sendMessage(message, false).setCallback(new RequestCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(DuiHuaActivity.this,"消息发送成功！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DuiHuaActivity.this, "消息发送成功！", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailed(int i) {
-                Toast.makeText(DuiHuaActivity.this,"发送失败！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DuiHuaActivity.this, "发送失败！", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -236,22 +249,24 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
-public  void changeSystemMsg(){
 
-    NIMClient.getService(SystemMessageObserver.class)
-            .observeReceiveSystemMsg(new Observer<SystemMessage>() {
-                @Override
-                public void onEvent(SystemMessage message) {
+    public void changeSystemMsg() {
+
+        NIMClient.getService(SystemMessageObserver.class)
+                .observeReceiveSystemMsg(new Observer<SystemMessage>() {
+                    @Override
+                    public void onEvent(SystemMessage message) {
 //                    NimUserInfo
-                }
-            }, true);
+                    }
+                }, true);
 
-}
+    }
+
     //判断当前Activity是否显示
     private boolean isForeground(Context context, String className) {
-        if (context==null || TextUtils.isEmpty(className)) {
+        if (context == null || TextUtils.isEmpty(className)) {
             return false;
-            }
+        }
 
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
@@ -260,9 +275,29 @@ public  void changeSystemMsg(){
 
             if (className.equals(cpn.getClassName())) {
                 return true;
-                }
             }
+        }
 
         return false;
-        }
+    }
+
+    public  void MsgChange(){
+        NIMClient.getService(FriendService.class).setMessageNotify(account, false).setCallback(new RequestCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.i("tmd", "1111111onSuccess: ");
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        });
+    }
+
 }

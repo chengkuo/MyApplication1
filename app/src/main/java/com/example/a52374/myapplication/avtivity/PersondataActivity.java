@@ -7,10 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.a52374.myapplication.R;
-import com.example.a52374.myapplication.fragment.fragment_TXL;
+import com.example.a52374.myapplication.fragment.Fragment_TXL;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendService;
@@ -86,7 +85,7 @@ public class PersondataActivity extends AppCompatActivity {
                               }
 
                           });
-                      fragment_TXL.delete(user);
+                      Fragment_TXL.delete(user);
                       isMyFriend=false;
                      but.setText("加为好友");
               }else {
@@ -110,7 +109,7 @@ public class PersondataActivity extends AppCompatActivity {
                         });
                     isMyFriend=true;
                   but.setText("删除好友");
-                  fragment_TXL.change(user.getAccount());
+                  Fragment_TXL.change(user.getAccount());
               }
                break;
        }

@@ -15,6 +15,7 @@ import com.example.a52374.myapplication.adapter.Sslvadpter;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.uinfo.constant.GenderEnum;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
@@ -82,5 +83,10 @@ public class Session extends Fragment {
      public static void change(){
 
      }
+    //接受其他页面传递的数据
+    public  void change(List<IMMessage> imMessages){
+
+
+    }
 
 }
