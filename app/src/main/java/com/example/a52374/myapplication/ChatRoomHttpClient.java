@@ -101,7 +101,7 @@ public class ChatRoomHttpClient {
         return instance;
     }
 
-    private ChatRoomHttpClient() {
+    public ChatRoomHttpClient() {
         HttpParams httpParams = new BasicHttpParams();
         // 设置最大连接数
         ConnManagerParams.setMaxTotalConnections(httpParams, MAX_CONNECTIONS);

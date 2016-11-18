@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.a52374.myapplication.ChatRoomHttpClient;
 import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.adapter.ChatRoomAdpter;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
@@ -35,6 +36,8 @@ public class Live extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        ChatRoomHttpClient chatRoomHttpClient = ChatRoomHttpClient.getInstance();
+        items = chatRoomHttpClient.josnSyuri();
         initAdpter(items,getContext());
 
     }
