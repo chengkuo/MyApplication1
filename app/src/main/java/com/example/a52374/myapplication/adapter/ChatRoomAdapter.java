@@ -15,10 +15,12 @@ import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
 import java.util.List;
 
 /**
+ * 聊天室列表的Adapter
+ *
  * Created by 吴广庆 on 2016/11/17.
  */
 
-public class ChatRoomAdpter extends BaseAdapter {
+public class ChatRoomAdapter extends BaseAdapter {
 
     List<ChatRoomInfo> list;
     Context context;
@@ -26,7 +28,7 @@ public class ChatRoomAdpter extends BaseAdapter {
     private static final int[] imageRes = {R.drawable.room_cover_36, R.drawable.room_cover_37, R.drawable.room_cover_49,
             R.drawable.room_cover_50, R.drawable.room_cover_57, R.drawable.room_cover_58, R.drawable.room_cover_64,
             R.drawable.room_cover_72};
-    public ChatRoomAdpter(List<ChatRoomInfo> list, Context context){
+    public ChatRoomAdapter(List<ChatRoomInfo> list, Context context){
         this.list = list;
         this.context = context;
 
@@ -52,6 +54,7 @@ public class ChatRoomAdpter extends BaseAdapter {
         final HoldView hv ;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.fragment_chatroom, parent, false);
+
             hv = new HoldView();
             hv.chat_room_window = (ImageView) convertView.findViewById(R.id.chat_room_window);
             hv.nowchat_room= (TextView) convertView.findViewById(R.id.nowchat_room);

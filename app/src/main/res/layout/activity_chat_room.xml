@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_chat_room"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="match_parent"
     tools:context="com.example.a52374.myapplication.avtivity.ChatRoomActivity">
 
     <GridView
@@ -12,5 +12,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:id="@+id/chat_room_gridview"
-        android:numColumns="auto_fit" />
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

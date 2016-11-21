@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private long last = 0;
     private Fragment_TXL fragment1;//通讯界面
     private Session fragment;
-    //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
-    //  private SystemMessage message;           //接收 好友验证通知 的信息
-    // private     AddFriendNotify addfn;        //好友通知对象
+  //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
+  //  private SystemMessage message;           //接收 好友验证通知 的信息
+   // private     AddFriendNotify addfn;        //好友通知对象
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,10 +114,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(LoginSyncStatus status) {
                 if (status == LoginSyncStatus.BEGIN_SYNC) {
-//                    LogUtil.i(TAG, "login sync data begin");
                     Log.i("tmd", "onEvent: login sync data begin");
                 } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
-//                    LogUtil.i(TAG, "login sync data completed");
                     Log.i("tmd", "onEvent: login sync data completed");
                 }
             }

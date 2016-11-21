@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +11,13 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-
 import com.example.a52374.myapplication.R;
-import com.example.a52374.myapplication.adapter.ChatRoomAdpter;
+import com.example.a52374.myapplication.adapter.ChatRoomAdapter;
 import com.example.a52374.myapplication.mybean.ChatRoomHttpClient;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by 52374 on 2016/11/15.
@@ -34,7 +26,7 @@ public class Live extends Fragment {
     GridView gridView;
 
     List<ChatRoomInfo> items = new ArrayList<ChatRoomInfo>();
-    ChatRoomAdpter myAdpter;
+    ChatRoomAdapter myAdpter;
 
 
     // code
@@ -98,7 +90,7 @@ public class Live extends Fragment {
     }
 
     private void initAdpter(List<ChatRoomInfo> items, Context context) {
-        myAdpter = new ChatRoomAdpter(items, context);
+        myAdpter = new ChatRoomAdapter(items, context);
 
         gridView.setAdapter(myAdpter);
     }
