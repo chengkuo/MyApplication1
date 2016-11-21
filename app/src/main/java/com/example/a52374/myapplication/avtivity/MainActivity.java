@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.a52374.myapplication.R;
@@ -21,15 +20,10 @@ import com.example.a52374.myapplication.fragment.Fragment_TXL;
 import com.example.a52374.myapplication.fragment.Live;
 import com.example.a52374.myapplication.fragment.Session;
 
-import com.netease.nimlib.sdk.AbortableFuture;
-import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.StatusCode;
-import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
-import com.netease.nimlib.sdk.auth.LoginInfo;
-import com.netease.nimlib.sdk.auth.OnlineClient;
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
@@ -56,21 +50,22 @@ public class MainActivity extends AppCompatActivity {
     private long last = 0;
     private Fragment_TXL fragment1;//通讯界面
     private Session fragment;
-    //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
-    //  private SystemMessage message;           //接收 好友验证通知 的信息
-    // private     AddFriendNotify addfn;        //好友通知对象
+  //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
+  //  private SystemMessage message;           //接收 好友验证通知 的信息
+   // private     AddFriendNotify addfn;        //好友通知对象
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initview();
         manager=getSupportFragmentManager();
-        // inittab();
+       // inittab();
         initdata();
         initadapter();
         registerSystemObserver(true);
         statechange();
         TongBustate();
+
         //注册信息接受监听
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
@@ -119,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(LoginSyncStatus status) {
                 if (status == LoginSyncStatus.BEGIN_SYNC) {
+//                    LogUtil.i(TAG, "login sync data begin");
                     Log.i("tmd", "onEvent: login sync data begin");
                 } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
+//                    LogUtil.i(TAG, "login sync data completed");
                     Log.i("tmd", "onEvent: login sync data completed");
                 }
             }
@@ -205,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                  startActivity(new Intent(MainActivity.this,AddfriendActivity.class));
                  break;
              case R.id.itemback:
+                 NIMClient.getService(AuthService.class).logout();
                  startActivity(new Intent(MainActivity.this,LoginActivity.class));
                  finish();
                  break;
@@ -233,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inittab() {
-        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
+       tab.setTabMode(TabLayout.MODE_SCROLLABLE);
         tab.setTabGravity(TabLayout.GRAVITY_FILL);
         tab.addTab(tab.newTab().setText("会话").setTag(0));
         tab.addTab(tab.newTab().setText("通讯").setTag(1));
@@ -258,4 +256,8 @@ public class MainActivity extends AppCompatActivity {
         last = currentTime;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

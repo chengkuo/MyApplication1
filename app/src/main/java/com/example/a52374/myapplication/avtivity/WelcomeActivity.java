@@ -19,6 +19,9 @@ import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 /**
  * Created by 52374 on 2016/11/13.
  */
+
+
+//欢迎界面
 public class WelcomeActivity extends Activity {
 
 
@@ -38,7 +41,9 @@ public class WelcomeActivity extends Activity {
                     if(DemoCache.getAccount()==null){
 
                     startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
-                    finish();} else {
+                    finish();
+                    }
+                    else {
 
                         doLogin();
                         finish();
@@ -50,7 +55,7 @@ public class WelcomeActivity extends Activity {
             }
         }).start();
     }
-    // 登录的方法
+    // 自动登录的方法
     public void doLogin() {
       //final LoginInfo info=   new NimApplication().loginInfo();
         //LoginInfo info = new LoginInfo(account,password); // config...
@@ -64,8 +69,9 @@ public class WelcomeActivity extends Activity {
                         //DemoCache.setContext(LoginActivity.this);
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserAccount(account );
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserToken(token);
-
+                     //   DemoCache.setAccount(account);
                         startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
+
                     }
 
                     @Override

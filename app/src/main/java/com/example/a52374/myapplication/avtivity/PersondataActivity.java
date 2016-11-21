@@ -3,9 +3,11 @@ package com.example.a52374.myapplication.avtivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.a52374.myapplication.R;
@@ -21,9 +23,11 @@ public class PersondataActivity extends AppCompatActivity {
     private Button but;
     private ImageView iv;
     private TextView tv1,tv2;
+    private RadioButton rb1,rb2;
     private Intent  intent;
     private  NimUserInfo user;
-    private boolean isMyFriend; //判断是否是你的好友
+    private boolean isMyFriend;//判断是否是你的好友
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class PersondataActivity extends AppCompatActivity {
        tv1= (TextView) findViewById(R.id.pdname);
         tv2= (TextView) findViewById(R.id.pdaccount);
         but= (Button) findViewById(R.id.pdbut2);
+        rb1= (RadioButton) findViewById(R.id.pdrb1);
+        rb2= (RadioButton) findViewById(R.id.pdrb2);
     }
 
     public void click(View view) {
@@ -111,6 +117,25 @@ public class PersondataActivity extends AppCompatActivity {
                   but.setText("删除好友");
                   Fragment_TXL.change(user.getAccount());
               }
+               break;
+
+           case R.id.pdrb1:
+                  if(rb1.isChecked()){
+                      Log.i("tmd","sssssssssssssssssssssssssss");
+                      rb1.setChecked(false);
+                  } else{
+                      rb1.setChecked(true);
+                      Log.i("sb","asda");
+                  }
+
+               break;
+           case R.id.pdrb2:
+
+               if(rb2.isChecked()){
+                   rb2.setChecked(false);
+               }else {
+                   rb2.setChecked(true);
+               }
                break;
        }
 

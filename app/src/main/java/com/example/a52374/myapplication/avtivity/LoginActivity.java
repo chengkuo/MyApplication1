@@ -1,6 +1,7 @@
 package com.example.a52374.myapplication.avtivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import java.util.prefs.Preferences;
 public class LoginActivity extends Activity {
     private EditText ed1,ed2;
     private String account,password;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,8 @@ public class LoginActivity extends Activity {
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserAccount(account);
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserToken(password);
 
+                        //getApplication().onCreate();
+                        //DemoCache.setAccount(account);
                          startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
 

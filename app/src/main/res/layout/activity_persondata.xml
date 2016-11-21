@@ -45,22 +45,26 @@
         android:layout_height="2dp"
         android:background="#a39191"
         android:id="@+id/pdtv1"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/pdiv1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"/>
-
+       />
+   <RelativeLayout
+       android:background="#ffffff"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/pdrl2"
+       android:layout_below="@id/pdiv1"
+       android:layout_marginTop="10dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="备注名"
+         android:background="#ffffff"
 
-        android:id="@+id/pdtv2"
         android:textSize="30sp"
-        android:layout_below="@+id/pdtv1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
+       android:id="@+id/pdtv2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"/>
 
     <TextView
@@ -73,16 +77,22 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"/>
 
+   </RelativeLayout>
+
+    <RelativeLayout
+          android:layout_marginTop="20dp"
+        android:layout_below="@id/pdrl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:id="@+id/pdrl">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="黑名单"
         android:id="@+id/pdtv4"
         android:textSize="30sp"
-        android:layout_marginLeft="20dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+       android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -114,6 +124,31 @@
         android:layout_below="@+id/pdtv5"
         android:layout_marginTop="10dp"/>
 
+        <RadioButton
+            android:onClick="click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:button="@null"
+            android:checked="true"
+            android:clickable="true"
+            android:background="@drawable/pdneed"
+            android:id="@+id/pdrb2"
+            android:layout_alignTop="@+id/pdtv5"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <RadioButton
+            android:onClick="click"
+             android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:background="@drawable/pdneed"
+            android:id="@+id/pdrb1"
+            android:layout_above="@+id/pdtv6"
+            android:layout_alignRight="@+id/pdrb2"
+            android:layout_alignEnd="@+id/pdrb2" />
+    </RelativeLayout>
     <Button
         android:onClick="click"
         android:layout_marginTop="20dp"
@@ -122,7 +157,7 @@
         android:text="聊天"
         android:textSize="25sp"
         android:id="@+id/pdbut1"
-        android:layout_below="@+id/pdtv7"
+        android:layout_below="@+id/pdrl"
         android:background="#253cbe"
        />
 
@@ -138,6 +173,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"/>
+
+
+
 
 
 </RelativeLayout>
