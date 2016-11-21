@@ -36,10 +36,10 @@ public class PersondataActivity extends AppCompatActivity {
     }
 
     private void initdata() {
-         user= (NimUserInfo) intent.getSerializableExtra("user");
-       tv1.setText(user.getName());
+        user= (NimUserInfo) intent.getSerializableExtra("user");
+        tv1.setText(user.getName());
         tv2.setText("账号:"+user.getAccount());
-       isMyFriend = NIMClient.getService(FriendService.class).isMyFriend(user.getAccount());
+        isMyFriend = NIMClient.getService(FriendService.class).isMyFriend(user.getAccount());
         if(isMyFriend){
           but.setText("删除好友");
         }

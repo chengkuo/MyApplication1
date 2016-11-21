@@ -233,7 +233,7 @@ public class Fragment_TXL extends Fragment{
          for(int i=0;i<data_haoyou.size()-1;i++){
               if(user.getAccount().equalsIgnoreCase(data_haoyou.get(i).getAccount())){
                   data_haoyou.remove(i);
-                  Log.i("tmd","删除好友成功 ") ;
+                  Log.i("tmd","删除好友成功 ");
                   break;
               }
           }

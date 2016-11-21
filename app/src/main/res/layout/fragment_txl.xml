@@ -3,16 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <ListView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.example.a52374.myapplication.myview.MyListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lv_xitong"></ListView>
+        android:id="@+id/lv_xitong"></com.example.a52374.myapplication.myview.MyListView>
 
-    <ListView
+    <com.example.a52374.myapplication.myview.MyListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
-        android:id="@+id/lv_haoyou"></ListView>
-
+        android:id="@+id/lv_haoyou"></com.example.a52374.myapplication.myview.MyListView>
+</LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a52374.myapplication">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- 权限声明 -->
     <!-- 访问网络状态 -->
@@ -38,6 +39,8 @@
     <!-- 接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <uses-permission android:name="com.example.a52374.myapplication.permission.RECEIVE_MSG" />
 
+
+
     <application
         android:name=".NimApplication"
         android:allowBackup="true"
@@ -50,6 +53,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity android:name=".avtivity.MainActivity" />
@@ -108,6 +112,11 @@
         <activity android:name=".avtivity.AddfriendActivity" />
         <activity android:name=".avtivity.PersondataActivity"></activity>
         <activity android:name=".avtivity.DuiHuaActivity"/>
+        <receiver android:name=".myreceive.MyReceive">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

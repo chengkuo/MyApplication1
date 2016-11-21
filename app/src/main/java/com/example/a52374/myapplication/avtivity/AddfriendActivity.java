@@ -34,6 +34,7 @@ public class AddfriendActivity extends AppCompatActivity {
         accounts.clear();
         account=et.getText().toString();
         accounts.add(account);
+        //从服务器端获取好友信息
         NIMClient.getService(UserService.class).fetchUserInfo(accounts)
                 .setCallback(  new RequestCallback<List<NimUserInfo>>() {
                     @Override

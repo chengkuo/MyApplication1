@@ -21,6 +21,7 @@ import android.widget.Toast;
 //import com.example.cheng.myyunxin.mybean.MsgBean;
 import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.mybean.MsgBean;
+import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -32,6 +33,7 @@ import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
@@ -51,6 +53,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tv_duixiang;
     private String account;
     private static String last_Account = "";
+    private static String LAST_MSG = "";
 
     Observer<List<IMMessage>> incomingMessageObserver =
             new Observer<List<IMMessage>>() {
@@ -59,6 +62,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                     // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
                     Log.i("tmd", "onEvent: 收到消息");
                     String account_from = messages.get(messages.size() - 1).getFromAccount();
+
                     StringBuffer sb = new StringBuffer();
                     for (IMMessage meseg : messages) {
                         sb.append(meseg.getContent());
@@ -67,6 +71,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                     if (account_from.equals(account)) {
                         users.add(new MsgBean(account_from, sb.toString()));
                         adapter.notifyDataSetChanged();
+                        LAST_MSG = sb.toString();
                     }
 
                 }
@@ -80,38 +85,43 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         Log.i("tmd", " 取出account ：onCreate: ");
         initView();
         account = getIntent().getStringExtra("account");
+        Log.i("tmd", "onCreate: "+account);
         tv_duixiang.setText(account);
         //设置与当前聊天对象的消息不在提醒
 //        MsgChange();
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
+        List<IMMessage> msglist = (List<IMMessage>) getIntent().getSerializableExtra(account);
+            Log.i("tmd", "@@@@@@@@@@@@@@@@@@@@@@@@@@onCreate: ");
+        if (msglist != null){
+            for (int i = 0; i < msglist.size(); i++) {
+                String msg = msglist.get(i).getContent();
+                MsgBean mm = new MsgBean(account,msg);
+                users.add(mm);
+                Log.i("tmd", "werwerewrewrerwonCreate:  dangqian 数据源大小为："+users.size());
+            }
 
+        }
         initAdapter();
-        if (account==null){
-            getIntent().getParcelableArrayExtra("accounts");
-        }
-
-        if (account == null) {
-            MsgBean mb = (MsgBean) getIntent().getSerializableExtra("MsgBean");
-            account = mb.getAccount();
-            tv_duixiang.setText(account);
-            users.add(mb);
-            adapter.notifyDataSetChanged();
-        }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        last_Account = account;
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        last_Account = account;
+
+    }
+
     private void initAdapter() {
-        if (!last_Account.equals(account)){
+        if (!last_Account.equals(account)) {
             users.clear();
         }
         adapter = new MyAdapter();
@@ -262,26 +272,8 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    //判断当前Activity是否显示
-    private boolean isForeground(Context context, String className) {
-        if (context == null || TextUtils.isEmpty(className)) {
-            return false;
-        }
-
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
-        if (list != null && list.size() > 0) {
-            ComponentName cpn = list.get(0).topActivity;
-
-            if (className.equals(cpn.getClassName())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public  void MsgChange(){
+    //设置消息接收时提醒功能
+    public void MsgChange() {
         NIMClient.getService(FriendService.class).setMessageNotify(account, false).setCallback(new RequestCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -298,6 +290,31 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
+    }
+    //查询消息记录
+    public void queryOldMsg(){
+        if (LAST_MSG.equals("")){
+            InvocationFuture<List<IMMessage>> oldList =  NIMClient.getService(MsgService.class).queryMessageListEx(MessageBuilder.createEmptyMessage(LAST_MSG,SessionTypeEnum.P2P,1000*60*60*24), QueryDirectionEnum.QUERY_OLD, 20, true);
+            oldList.setCallback(new RequestCallback<List<IMMessage>>() {
+                @Override
+                public void onSuccess(List<IMMessage> imMessages) {
+                    for (int i = 0; i < imMessages.size(); i++) {
+
+                    }
+                }
+
+                @Override
+                public void onFailed(int i) {
+
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+
+                }
+            });
+        }
+
     }
 
 }

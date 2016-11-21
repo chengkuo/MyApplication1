@@ -104,6 +104,7 @@ public class Session extends Fragment {
     }
 
     private void initdata() {
+        //获取最近会话列表
         NIMClient.getService(MsgService.class).queryRecentContacts()
                 .setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
                     @Override
