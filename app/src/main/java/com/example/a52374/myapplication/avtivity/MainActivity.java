@@ -231,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
     private void inittab() {
        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
         tab.setTabGravity(TabLayout.GRAVITY_FILL);
-        tab.addTab(tab.newTab().setText("会话").setTag(0));
-        tab.addTab(tab.newTab().setText("通讯").setTag(1));
-        tab.addTab(tab.newTab().setText("直播").setTag(2));
+        tab.addTab(tab.newTab().setText("消息").setTag(0));
+        tab.addTab(tab.newTab().setText("通讯录").setTag(1));
+        tab.addTab(tab.newTab().setText("聊天室").setTag(2));
     }
 
 
