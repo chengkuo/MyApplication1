@@ -42,11 +42,9 @@ public class LoginActivity extends Activity {
         switch (view.getId()){
             case R.id.but_login:
                doLogin();
-           if(flag){
-                finish();}
-                else {
-               Toast.makeText(LoginActivity.this,"操作失败",Toast.LENGTH_SHORT).show();
-           }
+
+
+
                 break;
         }
     }
@@ -67,17 +65,19 @@ public class LoginActivity extends Activity {
                         //getApplication().onCreate();
                         //DemoCache.setAccount(account);
                          startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        finish();
                     }
 
                     @Override
                     public void onFailed(int i) {
                         Log.i("tmd","登陆失败 !!!!"+i);
-                        Toast.makeText(LoginActivity.this,"sss",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onException(Throwable throwable) {
                         Log.i("tmd","登陆异常！！！！！");
+                        Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                     }
                     // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
                 };
