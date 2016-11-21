@@ -37,6 +37,12 @@ import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.ImageDownloader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +60,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private String account;
     private static String last_Account = "";
     private static String LAST_MSG = "";
+    private ImageLoader loader;
 
     Observer<List<IMMessage>> incomingMessageObserver =
             new Observer<List<IMMessage>>() {
@@ -85,6 +92,10 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         Log.i("tmd", " 取出account ：onCreate: ");
         initView();
         account = getIntent().getStringExtra("account");
+        //初始化Loader
+        loader = ImageLoader.getInstance();
+        //配置loader
+        loader.init(ImageLoaderConfiguration.createDefault(this));
         Log.i("tmd", "onCreate: "+account);
         tv_duixiang.setText(account);
         //设置与当前聊天对象的消息不在提醒
@@ -158,6 +169,15 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        DisplayImageOptions options;
+        public MyAdapter(){
+            Log.i("tmd", "MyAdapter:  chushihua options");
+            options = new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .displayer(new CircleBitmapDisplayer())
+                    .build();
+        }
 
         @Override
         public int getItemViewType(int position) {
@@ -189,12 +209,14 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             switch (getItemViewType(position)) {
                 case 0:
                     MyHolder_to holder_to = (MyHolder_to) holder;
-                    holder_to.iv.setImageResource(R.mipmap.ic_launcher);
+                    loader.displayImage(ImageDownloader.Scheme.DRAWABLE.wrap("R.drawable.avatar_def"),holder_to.iv,options);
+//                    holder_to.iv.setImageResource(R.mipmap.ic_launcher);
                     holder_to.tv.setText(mb.getMsg());
                     break;
                 case 1:
                     MyHolder_from holder_from = (MyHolder_from) holder;
-                    holder_from.iv.setImageResource(R.mipmap.ic_launcher);
+                    loader.displayImage(ImageDownloader.Scheme.DRAWABLE.wrap("R.mipmap.avatar_def"),holder_from.iv,options);
+//                    holder_from.iv.setImageResource(R.mipmap.ic_launcher);
                     holder_from.tv.setText(mb.getMsg());
                     break;
             }
@@ -299,7 +321,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onSuccess(List<IMMessage> imMessages) {
                     for (int i = 0; i < imMessages.size(); i++) {
-
+                        Log.i("tmd", "onSuccess: 查询结果的大小为："+imMessages.size());
                     }
                 }
 

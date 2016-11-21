@@ -26,6 +26,7 @@ public class LoginActivity extends Activity {
     private String account,password;
     private Context context;
     private boolean flag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

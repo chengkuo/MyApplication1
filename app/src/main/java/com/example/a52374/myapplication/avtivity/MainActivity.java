@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private long last = 0;
     private Fragment_TXL fragment1;//通讯界面
     private Session fragment;
-  //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
-  //  private SystemMessage message;           //接收 好友验证通知 的信息
-   // private     AddFriendNotify addfn;        //好友通知对象
+    //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
+    //  private SystemMessage message;           //接收 好友验证通知 的信息
+    // private     AddFriendNotify addfn;        //好友通知对象
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,14 +97,13 @@ public class MainActivity extends AppCompatActivity {
                    public void onEvent(StatusCode status) {
                        Log.i("tmd", "用户当前状态  User status changed to: " + status);
                        if (status.toString().equals("NET_BROKEN")) {
+                           Log.i("tmd", "onEvent: 网络断开连接");
                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
                            finish();
                        }
                        if (status.wontAutoLogin()) {
                            // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
                            Toast.makeText(MainActivity.this, "登录失败请重新登录", Toast.LENGTH_SHORT).show();
-                           startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                           finish();
                        }
                    }
                }, true);
