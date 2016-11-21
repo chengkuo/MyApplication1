@@ -1,13 +1,9 @@
 package com.example.a52374.myapplication.avtivity;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.example.cheng.myyunxin.mybean.MsgBean;
 import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.mybean.MsgBean;
 import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -35,19 +29,16 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
-import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.ImageDownloader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.list;
 
 public class DuiHuaActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -175,7 +166,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
-                    .displayer(new CircleBitmapDisplayer())
+                    .displayer(new FadeInBitmapDisplayer(30))
                     .build();
         }
 
@@ -209,7 +200,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
             switch (getItemViewType(position)) {
                 case 0:
                     MyHolder_to holder_to = (MyHolder_to) holder;
-                    loader.displayImage(ImageDownloader.Scheme.DRAWABLE.wrap("R.drawable.avatar_def"),holder_to.iv,options);
+                    loader.displayImage(ImageDownloader.Scheme.DRAWABLE.wrap("R.drawable.avatar"),holder_to.iv,options);
 //                    holder_to.iv.setImageResource(R.mipmap.ic_launcher);
                     holder_to.tv.setText(mb.getMsg());
                     break;
