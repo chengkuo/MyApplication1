@@ -124,7 +124,7 @@
         android:layout_below="@+id/pdtv5"
         android:layout_marginTop="10dp"/>
 
-        <RadioButton
+        <CheckBox
             android:onClick="click"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <RadioButton
+        <CheckBox
             android:onClick="click"
              android:clickable="true"
             android:layout_width="wrap_content"

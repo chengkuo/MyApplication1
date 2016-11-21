@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class PersondataActivity extends AppCompatActivity {
     private Button but;
     private ImageView iv;
     private TextView tv1,tv2;
-    private RadioButton rb1,rb2;
+   private CheckBox ck1,ck2;
     private Intent  intent;
     private  NimUserInfo user;
     private boolean isMyFriend;//判断是否是你的好友
@@ -54,8 +55,8 @@ public class PersondataActivity extends AppCompatActivity {
        tv1= (TextView) findViewById(R.id.pdname);
         tv2= (TextView) findViewById(R.id.pdaccount);
         but= (Button) findViewById(R.id.pdbut2);
-        rb1= (RadioButton) findViewById(R.id.pdrb1);
-        rb2= (RadioButton) findViewById(R.id.pdrb2);
+        ck1= (CheckBox) findViewById(R.id.pdrb1);
+        ck2= (CheckBox) findViewById(R.id.pdrb2);
     }
 
     public void click(View view) {
@@ -120,22 +121,12 @@ public class PersondataActivity extends AppCompatActivity {
                break;
 
            case R.id.pdrb1:
-                  if(rb1.isChecked()){
-                      Log.i("tmd","sssssssssssssssssssssssssss");
-                      rb1.setChecked(false);
-                  } else{
-                      rb1.setChecked(true);
-                      Log.i("sb","asda");
-                  }
+
 
                break;
            case R.id.pdrb2:
 
-               if(rb2.isChecked()){
-                   rb2.setChecked(false);
-               }else {
-                   rb2.setChecked(true);
-               }
+
                break;
        }
 

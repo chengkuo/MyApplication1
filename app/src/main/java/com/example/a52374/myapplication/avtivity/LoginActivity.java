@@ -25,6 +25,7 @@ public class LoginActivity extends Activity {
     private EditText ed1,ed2;
     private String account,password;
     private Context context;
+    private boolean flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +42,11 @@ public class LoginActivity extends Activity {
         switch (view.getId()){
             case R.id.but_login:
                doLogin();
-
-                finish();
+           if(flag){
+                finish();}
+                else {
+               Toast.makeText(LoginActivity.this,"操作失败",Toast.LENGTH_SHORT).show();
+           }
                 break;
         }
     }
@@ -59,7 +63,7 @@ public class LoginActivity extends Activity {
                         //DemoCache.setContext(LoginActivity.this);
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserAccount(account);
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserToken(password);
-
+                        flag=true;
                         //getApplication().onCreate();
                         //DemoCache.setAccount(account);
                          startActivity(new Intent(LoginActivity.this,MainActivity.class));
@@ -68,7 +72,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onFailed(int i) {
                         Log.i("tmd","登陆失败 !!!!"+i);
-                        //Toast.makeText(LoginActivity.this,"sss",0).show();
+                        Toast.makeText(LoginActivity.this,"sss",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
