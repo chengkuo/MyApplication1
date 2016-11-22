@@ -9,28 +9,29 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.a52374.myapplication.ChatRoomHttpClient;
 import com.example.a52374.myapplication.R;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 聊天室列表的Adapter
+ *
  * Created by 吴广庆 on 2016/11/17.
  */
 
-public class ChatRoomAdpter extends BaseAdapter {
-    ChatRoomHttpClient chatRoomHttpClient = ChatRoomHttpClient.getInstance();
-    List<ChatRoomInfo> list = chatRoomHttpClient.josnSyuri();
+public class ChatRoomAdapter extends BaseAdapter {
+
+    List<ChatRoomInfo> list;
     Context context;
     ChatRoomInfo chatRoomInfo;
     private static final int[] imageRes = {R.drawable.room_cover_36, R.drawable.room_cover_37, R.drawable.room_cover_49,
             R.drawable.room_cover_50, R.drawable.room_cover_57, R.drawable.room_cover_58, R.drawable.room_cover_64,
             R.drawable.room_cover_72};
-    public ChatRoomAdpter(List<ChatRoomInfo> list, Context context){
+    public ChatRoomAdapter(List<ChatRoomInfo> list, Context context){
         this.list = list;
         this.context = context;
+
     }
 
     @Override
@@ -50,21 +51,26 @@ public class ChatRoomAdpter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final HoldView hv;
-        if (convertView!=null) {
+        final HoldView hv ;
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.fragment_chatroom, parent, false);
-           hv = new HoldView();
+
+            hv = new HoldView();
             hv.chat_room_window = (ImageView) convertView.findViewById(R.id.chat_room_window);
             hv.nowchat_room= (TextView) convertView.findViewById(R.id.nowchat_room);
             hv.chat_room_name= (TextView) convertView.findViewById(R.id.chat_room_name);
             hv.user_count= (TextView) convertView.findViewById(R.id.user_count);
+            convertView.setTag(hv);
         }else {
             hv = (HoldView) convertView.getTag();
         }
         chatRoomInfo = list.get(position);
         hv.chat_room_window.setImageResource(imageRes[position]);
-        hv.nowchat_room.setText(chatRoomInfo.getName());
-        Log.i("cmd",chatRoomInfo.getAnnouncement());
+        hv.chat_room_name.setText(chatRoomInfo.getName());
+        if(!chatRoomInfo.isValid()){
+            hv.nowchat_room.setText("直播已关闭！");
+        }
+        hv.user_count.setText(String.valueOf(chatRoomInfo.getOnlineUserCount()));
         return convertView;
     }
 

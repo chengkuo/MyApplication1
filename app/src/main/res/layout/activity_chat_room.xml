@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_chat_room"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.a52374.myapplication.avtivity.ChatRoomActivity">
 
-    <GridView
+    <include
+        android:id="@+id/char_room_talk_text"
+        layout="@layout/talk_text"
+        />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/chat_room_gridview"/>
-</LinearLayout>
+        android:layout_above="@+id/talk_text"
+        android:id="@+id/rl">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list">
+
+        </ListView>
+    </LinearLayout>
+
+</RelativeLayout>

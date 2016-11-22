@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tv_duixiang"
+        android:layout_above="@+id/rll"
         android:id="@+id/rlv"></android.support.v7.widget.RecyclerView>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,7 +50,7 @@
         android:background="#ffffff"
         android:paddingBottom="10dp"
         android:gravity="left"
-        android:layout_marginLeft="15dp"
+        android:paddingLeft="15dp"
         android:layout_alignParentTop="true"
         />
 

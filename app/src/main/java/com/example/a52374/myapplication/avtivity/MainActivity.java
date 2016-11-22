@@ -28,14 +28,11 @@ import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
-import com.netease.nimlib.sdk.friend.model.Friend;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
-import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +94,13 @@ public class MainActivity extends AppCompatActivity {
                    public void onEvent(StatusCode status) {
                        Log.i("tmd", "用户当前状态  User status changed to: " + status);
                        if (status.toString().equals("NET_BROKEN")) {
+                           Log.i("tmd", "onEvent: 网络断开连接");
                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
                            finish();
                        }
                        if (status.wontAutoLogin()) {
                            // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
                            Toast.makeText(MainActivity.this, "登录失败请重新登录", Toast.LENGTH_SHORT).show();
-                           startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                           finish();
                        }
                    }
                }, true);
@@ -115,10 +111,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(LoginSyncStatus status) {
                 if (status == LoginSyncStatus.BEGIN_SYNC) {
-//                    LogUtil.i(TAG, "login sync data begin");
                     Log.i("tmd", "onEvent: login sync data begin");
                 } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
-//                    LogUtil.i(TAG, "login sync data completed");
                     Log.i("tmd", "onEvent: login sync data completed");
                 }
             }
@@ -234,9 +228,9 @@ public class MainActivity extends AppCompatActivity {
     private void inittab() {
        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
         tab.setTabGravity(TabLayout.GRAVITY_FILL);
-        tab.addTab(tab.newTab().setText("会话").setTag(0));
-        tab.addTab(tab.newTab().setText("通讯").setTag(1));
-        tab.addTab(tab.newTab().setText("直播").setTag(2));
+        tab.addTab(tab.newTab().setText("消息").setTag(0));
+        tab.addTab(tab.newTab().setText("通讯录").setTag(1));
+        tab.addTab(tab.newTab().setText("聊天室").setTag(2));
     }
 
 

@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    >
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/room_cover_36"
         android:id="@+id/chat_room_window"
-        android:layout_weight="1"
-        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -25,10 +25,9 @@
         android:layout_alignRight="@+id/chat_room_window"
         android:layout_alignEnd="@+id/chat_room_window"
         android:background="#64000000"
-        android:drawableRight="@drawable/nim_ic_message_actionbar_team"
-        android:paddingRight="15dp"
+
         android:textColor="#fff"
-        android:gravity="center_vertical|left"
+
         />
 
     <TextView
@@ -36,12 +35,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chat_room_window"
-        android:layout_alignLeft="@+id/chat_room_window"
         android:gravity="center_vertical|left"
-        android:id="@+id/chat_room_name" />
+        android:id="@+id/chat_room_name"
+        android:layout_alignRight="@+id/chat_room_window"
+        android:layout_alignEnd="@+id/chat_room_window"
+        android:layout_alignLeft="@+id/chat_room_window"
+        android:layout_alignStart="@+id/chat_room_window"
+        android:background="#FFFFFF"/>
 
     <TextView
-        android:text="00"
+        android:text="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/user_count"
@@ -51,6 +54,16 @@
         android:layout_alignRight="@+id/chat_room_window"
         android:layout_alignEnd="@+id/chat_room_window"
         android:layout_alignTop="@+id/nowchat_room" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/nim_ic_message_actionbar_team"
+        android:layout_alignTop="@+id/nowchat_room"
+        android:layout_alignBottom="@+id/nowchat_room"
+        android:layout_toLeftOf="@+id/user_count"
+        android:id="@+id/imageView" />
+
 
 
 </RelativeLayout>

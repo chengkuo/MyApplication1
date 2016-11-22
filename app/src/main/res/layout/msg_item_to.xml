@@ -4,10 +4,11 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/iv_tx_to"
-        android:src="@mipmap/ic_launcher"
+        android:scaleType="fitXY"
+        android:src="@mipmap/avatar_def"
         android:layout_alignParentRight="true"/>
 
     <TextView
