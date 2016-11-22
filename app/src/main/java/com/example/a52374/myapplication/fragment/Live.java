@@ -14,9 +14,8 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.a52374.myapplication.R;
-import com.example.a52374.myapplication.adapter.ChatRoomAdapter;
+import com.example.a52374.myapplication.adapter.ChatRoomsAdapter;
 import com.example.a52374.myapplication.avtivity.ChatRoomActivity;
-import com.example.a52374.myapplication.avtivity.PersondataActivity;
 import com.example.a52374.myapplication.mybean.ChatRoomHttpClient;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
 
@@ -30,7 +29,7 @@ public class Live extends Fragment {
     GridView gridView;
 
     List<ChatRoomInfo> items = new ArrayList<ChatRoomInfo>();
-    ChatRoomAdapter myAdpter;
+    ChatRoomsAdapter myAdpter;
 
 
     // code
@@ -57,6 +56,7 @@ public class Live extends Fragment {
     private static final String RESULT_KEY_ONLINE_USER_COUNT = "onlineusercount";
 
     private final static String EXTRA_ROOM_ID = "ROOM_ID";
+    private final static String IMAGE_VIEW = "IMAGE_VIEW";
 
 
     @Nullable
@@ -75,6 +75,7 @@ public class Live extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(),ChatRoomActivity.class);
                 intent.putExtra(EXTRA_ROOM_ID,items.get(position).getRoomId());
+                intent.putExtra(IMAGE_VIEW,position);
                 startActivity(intent);
             }
         });
@@ -83,7 +84,7 @@ public class Live extends Fragment {
     }
 
     private void initAdpter(List<ChatRoomInfo> items, Context context) {
-        myAdpter = new ChatRoomAdapter(items, context);
+        myAdpter = new ChatRoomsAdapter(items, context);
         gridView.setAdapter(myAdpter);
     }
 

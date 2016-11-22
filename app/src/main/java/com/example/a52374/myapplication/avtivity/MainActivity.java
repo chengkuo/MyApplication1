@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(fragment2);
 
     }
+/*
 
     private void inittab() {
        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -233,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
         tab.addTab(tab.newTab().setText("聊天室").setTag(2));
     }
 
+*/
 
     private void initview() {
        vp= (ViewPager) findViewById(R.id.mainvp);

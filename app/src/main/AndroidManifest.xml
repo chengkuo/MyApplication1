@@ -110,9 +110,11 @@
             android:value="com.netease.nimlib.service.NimReceiver" />
 
         <activity android:name=".avtivity.AddfriendActivity" />
-        <activity android:name=".avtivity.PersondataActivity"></activity>
+        <activity android:name=".avtivity.PersondataActivity"
+            ></activity>
         <activity android:name=".avtivity.DuiHuaActivity"/>
-        <activity android:name=".avtivity.ChatRoomActivity"/>
+        <activity android:name=".avtivity.ChatRoomActivity"
+            android:windowSoftInputMode = "adjustUnspecified|stateHidden"/>
         <receiver android:name=".myreceive.MyReceive">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

@@ -20,7 +20,7 @@ import java.util.List;
  * Created by 吴广庆 on 2016/11/17.
  */
 
-public class ChatRoomAdapter extends BaseAdapter {
+public class ChatRoomsAdapter extends BaseAdapter {
 
     List<ChatRoomInfo> list;
     Context context;
@@ -28,7 +28,7 @@ public class ChatRoomAdapter extends BaseAdapter {
     private static final int[] imageRes = {R.drawable.room_cover_36, R.drawable.room_cover_37, R.drawable.room_cover_49,
             R.drawable.room_cover_50, R.drawable.room_cover_57, R.drawable.room_cover_58, R.drawable.room_cover_64,
             R.drawable.room_cover_72};
-    public ChatRoomAdapter(List<ChatRoomInfo> list, Context context){
+    public ChatRoomsAdapter(List<ChatRoomInfo> list, Context context){
         this.list = list;
         this.context = context;
 

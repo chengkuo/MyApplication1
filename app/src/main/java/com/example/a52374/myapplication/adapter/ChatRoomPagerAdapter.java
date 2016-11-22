@@ -5,16 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by 52374 on 2016/11/15.
+ * Created by 吴广庆 on 2016/11/22.
  */
-public class Mainadpter extends FragmentPagerAdapter {
-      private ArrayList<Fragment> list;
 
-    public Mainadpter(FragmentManager fm,ArrayList<Fragment> list) {
+public class ChatRoomPagerAdapter extends FragmentPagerAdapter {
+    ArrayList<Fragment> list;
+    String[] title = {"直播互动","主播","在线成员"};
+    public ChatRoomPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
         super(fm);
-        this.list=list;
+        this.list = list;
     }
 
     @Override
@@ -29,14 +31,6 @@ public class Mainadpter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(position==0){
-            return  "会话";
-        }
-        else  if(position==1){
-            return  "通讯录";
-        } else if(position==2){
-            return  "聊天室";
-        }
-        return  null;
+        return title[position];
     }
 }
