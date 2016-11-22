@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.a52374.myapplication.NimApplication;
 import com.example.a52374.myapplication.R;
@@ -46,7 +47,6 @@ public class WelcomeActivity extends Activity {
                     else {
 
                         doLogin();
-                        finish();
                     }
 
                 } catch (InterruptedException e) {
@@ -71,6 +71,7 @@ public class WelcomeActivity extends Activity {
                         com.example.a52374.myapplication.datamanagement.Preferences.saveUserToken(token);
                      //   DemoCache.setAccount(account);
                         startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
+                        finish();
 
                     }
 
@@ -78,11 +79,16 @@ public class WelcomeActivity extends Activity {
                     public void onFailed(int i) {
                         Log.i("tmd","登陆失败 !!!!"+i);
                         //Toast.makeText(LoginActivity.this,"sss",0).show();
+
+                        startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
+                        finish();
                     }
 
                     @Override
                     public void onException(Throwable throwable) {
                         Log.i("tmd","登陆异常！！！！！");
+                        startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
+                        finish();
                     }
                     // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
                 };
