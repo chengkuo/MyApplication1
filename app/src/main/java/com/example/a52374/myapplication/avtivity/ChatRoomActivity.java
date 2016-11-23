@@ -24,6 +24,7 @@ import com.netease.nimlib.sdk.AbortableFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.chatroom.ChatRoomService;
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
@@ -53,6 +54,9 @@ public class ChatRoomActivity extends AppCompatActivity {
     private ViewPager chatRoomBody;
     private FragmentManager manager;
     private ChatRoomPagerAdapter pagerAdapter;
+   static FragmentTalk fragmentTalk;
+    String text;
+//    List<ChatRoomMessage> messageList;
     private ArrayList<Fragment> fragmentList=new ArrayList<>();
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
     private static final String TAG = ChatRoomActivity.class.getSimpleName();
@@ -73,6 +77,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
         roomId = getIntent().getStringExtra(EXTRA_ROOM_ID);
         int i = getIntent().getIntExtra(IMAGE_VIEW,0);
+        initRoom();
         initView();
         initData();
         iv.setImageResource(imageRes[i]);
@@ -83,9 +88,45 @@ public class ChatRoomActivity extends AppCompatActivity {
                 finish();
             }
         });
-        initRoom();
+
+        initTalkText();
     }
 
+   private void initTalkText() {
+        /*new FragmentTalk.TextCallback(){
+
+           @Override
+           public void getText(String s) {
+               text = s;
+               // 创建文本消息
+               ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(
+                       roomId, // 聊天室id
+                       text // 文本内容
+               );
+
+                // 发送消息。如果需要关心发送结果，可设置回调函数。发送完成时，会收到回调。如果失败，会有具体的错误码。
+               NIMClient.getService(ChatRoomService.class).sendMessage(message,true);
+           }
+       };*/
+
+
+        Observer<List<ChatRoomMessage>> incomingChatRoomMsg = new Observer<List<ChatRoomMessage>>() {
+            @Override
+            public void onEvent(List<ChatRoomMessage> messages) {
+                // 处理新收到的消息
+                if (messages == null || messages.isEmpty()) {
+                    return;
+                }
+                fragmentTalk.talkText(messages);
+            }
+        };
+        endTalkText(incomingChatRoomMsg,true);
+    }
+
+    private void endTalkText(Observer<List<ChatRoomMessage>> incomingChatRoomMsg,boolean register) {
+        NIMClient.getService(ChatRoomServiceObserver.class)
+                .observeReceiveMessage(incomingChatRoomMsg, register);
+    }
 
 
     /**
@@ -100,8 +141,11 @@ public class ChatRoomActivity extends AppCompatActivity {
     }
 
     private void initData() {
-
-        fragmentList.add(new FragmentTalk());
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_ROOM_ID,roomId);
+        fragmentTalk = new FragmentTalk();
+        fragmentTalk.setArguments(bundle);
+        fragmentList.add(fragmentTalk);
         fragmentList.add(new FragmentAnchor());
         fragmentList.add(new FragmentPerson());
     }
@@ -142,57 +186,11 @@ public class ChatRoomActivity extends AppCompatActivity {
                     }
                 });
     }
-/*
-    private void registerObservers(boolean register) {
-        NIMClient.getService(ChatRoomServiceObserver.class).observeReceiveMessage(incomingChatRoomMsg, register);
-    }
 
-    Observer<List<ChatRoomMessage>> incomingChatRoomMsg = new Observer<List<ChatRoomMessage>>() {
-        @Override
-        public void onEvent(List<ChatRoomMessage> messages) {
-            if (messages == null || messages.isEmpty()) {
-                return;
-            }
 
-            boolean needRefresh = false;
-            List<ChatRoomMessage> addedListItems = new ArrayList<>(messages.size());
+   private void initTalk(){
 
-            for(ChatRoomMessage message : messages){
-                if(isMyMessage(message)){
-                    saveMessage(message,false);
-                    addedListItems.add(message);
-                    needRefresh = true;
-                }
-                if (needRefresh) {
-                    mDataSetObservable.notifyChanged();
-                }
-
-                message.toString();
-            }
 
 
     }
-        public void saveMessage(final IMMessage message, boolean addFirst) {
-            if (message == null) {
-                return;
-            }
-
-            if (items.size() >= MESSAGE_CAPACITY) {
-                items.poll();
-            }
-
-            if (addFirst) {
-                items.add(0, message);
-            } else {
-                items.add(message);
-            }
-        }
-};
-
-
-    public boolean isMyMessage(ChatRoomMessage message) {
-        return message.getSessionType() == SessionTypeEnum.ChatRoom
-                && message.getSessionId() != null
-                && message.getSessionId().equals(roomId);
-    }*/
 }

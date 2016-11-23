@@ -67,6 +67,8 @@ public class NimApplication extends Application {
         // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
         String sdkPath = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/nim";
         options.sdkStorageRootPath = sdkPath;
+        // 配置数据库加密秘钥
+        options.databaseEncryptKey = "NETEASE";
         options.appKey="45c6af3c98409b18a84451215d0bdd6e";
         // 配置是否需要预下载附件缩略图，默认为 true
         options.preloadAttach = true;

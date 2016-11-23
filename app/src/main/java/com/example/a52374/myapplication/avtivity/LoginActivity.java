@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.a52374.myapplication.MD5.MD5;
 import com.example.a52374.myapplication.R;
 import com.example.a52374.myapplication.datamanagement.DemoCache;
 import com.netease.nimlib.sdk.NIMClient;
@@ -53,7 +54,7 @@ public class LoginActivity extends Activity {
     public void doLogin() {
         account=ed1.getText().toString().toLowerCase();
         password=ed2.getText().toString();
-        LoginInfo info = new LoginInfo(account,password); // config...
+        LoginInfo info = new LoginInfo(account, MD5.getStringMD5(password)); // config...
         RequestCallback<LoginInfo> callback =
                 new RequestCallback<LoginInfo>() {
                     @Override

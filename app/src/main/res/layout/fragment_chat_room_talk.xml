@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
-        android:id="@+id/char_room_talk_text"
         layout="@layout/talk_text"
         />
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list"
-            android:layout_above="@+id/talk_text">
+            android:layout_height="match_parent"
+            android:id="@+id/talk_list"
+            android:layout_above="@+id/et_msg">
         </ListView>
 </RelativeLayout>
