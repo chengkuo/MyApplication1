@@ -6,10 +6,19 @@
 
     tools:context=".avtivity.MainActivity">
 
+       <android.support.v7.widget.Toolbar
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:id="@+id/maintlb"
+           android:background="#ffffff"
+           ></android.support.v7.widget.Toolbar>
       <android.support.design.widget.TabLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:id="@+id/maintb"></android.support.design.widget.TabLayout>
+          android:id="@+id/maintb"
+          android:layout_below="@id/maintlb"
+
+          ></android.support.design.widget.TabLayout>
        <android.support.v4.view.ViewPager
            android:layout_width="match_parent"
            android:layout_height="match_parent"

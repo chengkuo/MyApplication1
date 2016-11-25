@@ -1,8 +1,10 @@
 package com.example.a52374.myapplication.avtivity;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,16 +28,36 @@ public class PersondataActivity extends AppCompatActivity {
     private Intent  intent;
     private  NimUserInfo user;
     private boolean isMyFriend;//判断是否是你的好友
-
+    private ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_persondata);
         initview();
+
+
+
+        initbar();
         intent=getIntent();
         initdata();
 
+    }
+
+    private void initbar() {
+        bar=getSupportActionBar();
+        bar.setTitle("");
+        bar.setHomeButtonEnabled(true);
+        bar.setDisplayHomeAsUpEnabled(true);;
+        bar.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initdata() {

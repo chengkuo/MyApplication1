@@ -6,12 +6,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.example.a52374.myapplication.R;
@@ -28,11 +31,14 @@ import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
+import com.netease.nimlib.sdk.friend.model.Friend;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,21 +54,27 @@ public class MainActivity extends AppCompatActivity {
     private long last = 0;
     private Fragment_TXL fragment1;     //通讯界面
     private Session fragment;
+    private Toolbar tb;
+    private ActionBar bar;
+   // private ActionBar bar;
   //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
   //  private SystemMessage message;           //接收 好友验证通知 的信息
    // private     AddFriendNotify addfn;        //好友通知对象
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initview();
+
         manager=getSupportFragmentManager();
        // inittab();
         initdata();
         initadapter();
         registerSystemObserver(true);
-        statechange();
-        TongBustate();
+        statechange(true);
+        TongBustate(true);
 
         //注册信息接受监听
         NIMClient.getService(MsgServiceObserve.class)
@@ -88,12 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     //监听用户状态
-   public void statechange() {
+   public void statechange(boolean flag) {
        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
                new Observer<StatusCode>() {
                    public void onEvent(StatusCode status) {
                        Log.i("tmd", "用户当前状态  User status changed to: " + status);
                        if (status.toString().equals("NET_BROKEN")) {
+                          // startActivity(new Intent(MainActivity.this, LoginActivity.class));
                            Log.i("tmd", "onEvent: 网络断开连接");
                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
                            finish();
@@ -103,20 +116,22 @@ public class MainActivity extends AppCompatActivity {
                            Toast.makeText(MainActivity.this, "登录失败请重新登录", Toast.LENGTH_SHORT).show();
                        }
                    }
-               }, true);
+               }, flag);
    }
-    public void TongBustate() {
+    public void TongBustate(boolean flag) {
         //SDK做出数据同步的操作
         NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(new Observer<LoginSyncStatus>() {
             @Override
             public void onEvent(LoginSyncStatus status) {
                 if (status == LoginSyncStatus.BEGIN_SYNC) {
+//                    LogUtil.i(TAG, "login sync data begin");
                     Log.i("tmd", "onEvent: login sync data begin");
                 } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
+//                    LogUtil.i(TAG, "login sync data completed");
                     Log.i("tmd", "onEvent: login sync data completed");
                 }
             }
-        }, true);
+        }, flag);
     }
 
 
@@ -229,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
     private void inittab() {
        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
         tab.setTabGravity(TabLayout.GRAVITY_FILL);
-        tab.addTab(tab.newTab().setText("消息").setTag(0));
-        tab.addTab(tab.newTab().setText("通讯录").setTag(1));
-        tab.addTab(tab.newTab().setText("聊天室").setTag(2));
+        tab.addTab(tab.newTab().setText("会话").setTag(0));
+        tab.addTab(tab.newTab().setText("通讯").setTag(1));
+        tab.addTab(tab.newTab().setText("直播").setTag(2));
     }
 
 */
@@ -239,6 +254,13 @@ public class MainActivity extends AppCompatActivity {
     private void initview() {
        vp= (ViewPager) findViewById(R.id.mainvp);
        tab= (TabLayout) findViewById(R.id.maintb);
+        tb= (Toolbar) findViewById(R.id.maintlb);
+        setSupportActionBar(tb);
+        bar=getSupportActionBar();
+        bar.setLogo(R.mipmap.ic_logo);
+        bar.setTitle("云信");
+        bar.show();
+
     }
 
     @Override
@@ -256,5 +278,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        registerSystemObserver(false);
+        statechange(false);
+        TongBustate(false);
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, false);
+        Log.i("tmd","mainondestroy");
     }
 }

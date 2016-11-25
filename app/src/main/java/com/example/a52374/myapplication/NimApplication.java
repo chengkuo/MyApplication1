@@ -27,7 +27,7 @@ public class NimApplication extends Application {
 
     @Override
     public void onCreate() {
-        // ... your codes
+        // ... your codesd+
         super.onCreate();
         DemoCache.setContext(this);// 设置 上下文 自动登录必要要用
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）

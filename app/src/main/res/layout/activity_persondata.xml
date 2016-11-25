@@ -3,15 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c3c2ea"
+    android:background="#e5e5ec"
     tools:context=".avtivity.PersondataActivity">
-
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/pdrl3"
+         android:background="#ffffff">
     <ImageView
         android:layout_marginTop="20dp"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:id="@+id/pdiv1"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/touxiang"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -40,21 +44,23 @@
         android:layout_alignStart="@+id/pdname"
         android:layout_marginTop="10dp"/>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#a39191"
         android:id="@+id/pdtv1"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/pdiv1"
+        android:layout_below="@+id/pdaccount"
        />
+     </RelativeLayout>
    <RelativeLayout
        android:background="#ffffff"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/pdrl2"
-       android:layout_below="@id/pdiv1"
-       android:layout_marginTop="10dp">
+       android:layout_below="@id/pdrl3"
+       android:layout_marginTop="20dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -158,7 +164,7 @@
         android:textSize="25sp"
         android:id="@+id/pdbut1"
         android:layout_below="@+id/pdrl"
-        android:background="#253cbe"
+        android:background="#4f7ae7"
        />
 
     <Button
@@ -167,7 +173,7 @@
         android:layout_height="wrap_content"
         android:text="加为好友"
         android:textSize="25sp"
-        android:background="#253cbe"
+        android:background="#4f7ae7"
         android:id="@+id/pdbut2"
         android:layout_below="@+id/pdbut1"
         android:layout_alignParentLeft="true"

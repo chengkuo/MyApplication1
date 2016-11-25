@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -27,11 +28,14 @@ public class LoginActivity extends Activity {
     private String account,password;
     private Context context;
     private boolean flag;
+    private android.app.ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        bar=getActionBar();
+        bar.hide();
         initview();
     }
 

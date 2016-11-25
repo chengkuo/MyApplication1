@@ -1,5 +1,6 @@
 package com.example.a52374.myapplication.avtivity;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
     private static String last_Account = "";
     private static String LAST_MSG = "";
     private ImageLoader loader;
+    private android.support.v7.app.ActionBar  bar;
 
     Observer<List<IMMessage>> incomingMessageObserver =
             new Observer<List<IMMessage>>() {
@@ -83,6 +85,8 @@ public class DuiHuaActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_dui_hua);
         Log.i("tmd", " 取出account ：onCreate: ");
         initView();
+        bar=getSupportActionBar();
+        bar.hide();
         account = getIntent().getStringExtra("account");
         //初始化Loader
         loader = ImageLoader.getInstance();

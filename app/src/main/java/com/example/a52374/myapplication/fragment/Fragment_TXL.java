@@ -11,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.a52374.myapplication.R;
-import com.example.a52374.myapplication.adapter.MyExpAdapter;
 import com.example.a52374.myapplication.avtivity.PersondataActivity;
 import com.example.a52374.myapplication.mybean.Bean_TXL;
 import com.netease.nimlib.sdk.NIMClient;
@@ -27,7 +25,6 @@ import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,8 +46,8 @@ import java.util.Set;
         private  ArrayList<String> list=new ArrayList<>();//所有好友的账号
         private static ArrayList<NimUserInfo> data_haoyou =new ArrayList<>();//所有好友
         private static MyAdapter_haoyou adapter_haoyou;
-        private ExpandableListView exp;
-        private HashMap<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
+
+
 
         @Nullable
         @Override
@@ -80,6 +77,8 @@ import java.util.Set;
                     intent.putExtra("user",data_haoyou.get(position));
                     //intent.putExtra("account",data_haoyou.get(position).getAccount());
                     startActivity(intent);
+
+
                 }
             });
 
@@ -89,9 +88,6 @@ import java.util.Set;
             adapter_haoyou = new MyAdapter_haoyou();
 
             lv_haoyou.setAdapter(adapter_haoyou);
-
-//            MyExpAdapter mea = new MyExpAdapter(map,getContext());
-//            exp.setAdapter(mea);
         }
 
         private void initdata_hao() {
@@ -106,7 +102,6 @@ import java.util.Set;
                  deletesame(data_haoyou);  }// 获取所有好友用户资料
             Log.i("tmd","通讯录初始化数据");
            // adapter_haoyou.notifyDataSetChanged();
-            map.put("我的好友",list);
         }
 
         private void initAdapter() {
@@ -125,7 +120,6 @@ import java.util.Set;
         private void initView(View view) {
             lv_xitong = (ListView) view.findViewById(R.id.lv_xitong);
             lv_haoyou = (ListView) view.findViewById(R.id.lv_haoyou);
-//            exp = (ExpandableListView) view.findViewById(R.id.exp);
         }
 
         class MyAdapter extends BaseAdapter {
@@ -202,7 +196,7 @@ import java.util.Set;
                     holder = (ViewHolder) convertView.getTag();
                 }
                 holder.mTvName.setText(data_haoyou.get(position).getName());
-                holder.mIvTouxiang.setImageResource(R.mipmap.avatar_def);
+                holder.mIvTouxiang.setImageResource(R.mipmap.ic_launcher);
                 return convertView;
             }
 
@@ -270,6 +264,6 @@ import java.util.Set;
 
       }
 
-}
+    }
 
 
