@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Mainadpter mainadpter;
     private FragmentManager manager;
     private long last = 0;
-    private Fragment_TXL fragment1;//通讯界面
+    private Fragment_TXL fragment1;     //通讯界面
     private Session fragment;
   //  private SystemMessageObserver sobserver;  //监听 好友验证 通知
   //  private SystemMessage message;           //接收 好友验证通知 的信息
