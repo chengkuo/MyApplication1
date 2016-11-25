@@ -1,6 +1,7 @@
 package com.example.a52374.myapplication.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.util.List;
 public class ChatRoomPersonAdapter extends BaseAdapter {
     private List<ChatRoomMember> memberList;
     private Context context;
+    Bitmap bitmap;
     public ChatRoomPersonAdapter(List<ChatRoomMember> memberList, Context context) {
         this.memberList = memberList;
         this.context = context;
@@ -56,7 +58,7 @@ public class ChatRoomPersonAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.chat_room_person, parent, false);
             hv =new HoldView();
             hv.personPhoto= (ImageView) convertView.findViewById(R.id.person_photo);
-            hv.personName= (TextView) convertView.findViewById(R.id.name_talk_text);
+            hv.personName= (TextView) convertView.findViewById(R.id.person_name);
             convertView.setTag(hv);
         }else {
             hv = (HoldView) convertView.getTag();
@@ -70,10 +72,15 @@ public class ChatRoomPersonAdapter extends BaseAdapter {
                     conn.connect();
                     if (conn.getResponseCode()==200){
                         InputStream is = conn.getInputStream();
-
-                        hv.personPhoto.setImageBitmap(BitmapCup.bitmap(BitmapFactory.decodeStream(is)));
-
+                        bitmap = BitmapCup.bitmap(BitmapFactory.decodeStream(is));
+                        if (bitmap == null){
+                            bitmap = BitmapCup.bitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.avatar_def));
+                        }
                     }
+                    if (bitmap == null){
+                        bitmap = BitmapCup.bitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.avatar_def));
+                    }
+                    hv.personPhoto.setImageBitmap(BitmapCup.bitmap(bitmap));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -81,7 +88,8 @@ public class ChatRoomPersonAdapter extends BaseAdapter {
         }).start();
         hv.personName.setText(memberList.get(position).getNick());
         return convertView;
-    }class HoldView{
+    }
+    class HoldView{
         ImageView personPhoto;
         TextView personName;
     }

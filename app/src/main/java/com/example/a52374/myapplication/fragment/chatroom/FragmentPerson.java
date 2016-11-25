@@ -86,7 +86,4 @@ public class FragmentPerson extends Fragment {
                     }
                 });
     }
-    class HoldView{
-        TextView name,nameTalk;
-    }
 }

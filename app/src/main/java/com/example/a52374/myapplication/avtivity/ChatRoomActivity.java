@@ -63,7 +63,9 @@ public class ChatRoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_chat_room);
+        getSupportActionBar().hide();
         roomId = getIntent().getStringExtra(EXTRA_ROOM_ID);
         int i = getIntent().getIntExtra(IMAGE_VIEW, 0);
         initRoom();
@@ -132,6 +134,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         pagerAdapter = new ChatRoomPagerAdapter(manager, fragmentList);
         chatRoomBody.setAdapter(pagerAdapter);
         chatRoomTab.setupWithViewPager(chatRoomBody);
+        chatRoomBody.setOffscreenPageLimit(4);
     }
 
 
@@ -164,28 +167,5 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
         });
 
-//
-//        /**
-//         * 获取聊天室成员信息
-//         *
-//         * @param roomId          聊天室id
-//         * @param memberQueryType 成员查询类型。见{@link MemberQueryType}
-//         * @param time            查询固定成员列表用ChatRoomMember.getUpdateTime,
-//         *                        查询游客列表用ChatRoomMember.getEnterTime，
-//         *                        填0会使用当前服务器最新时间开始查询，即第一页，单位毫秒
-//         * @param limit           条数限制
-//         * @return InvocationFuture 可以设置回调函数。回调中返回成员信息列表
-//         */
-//        NIMClient.getService(ChatRoomService.class)
-//                .fetchRoomMembers(roomId, MemberQueryType.NORMAL, updateTime, 10)
-//                .setCallback(new RequestCallbackWrapper<List<ChatRoomMember>>() {
-//                    @Override
-//                    public void onResult(int code, List<ChatRoomMember> result, Throwable exception) {
-//                        for (ChatRoomMember member : result) {
-//                            updateTime = member.getUpdateTime();
-//                        }
-//                        Log.i("cmd",String.valueOf(code));
-//                    }
-//                });
     }
 }
