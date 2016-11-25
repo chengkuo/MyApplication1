@@ -65,7 +65,7 @@ public class ChatRoomTalkAdapter extends BaseAdapter {
         }else {
             hv = (HoldView) convertView.getTag();
         }
-        hv.name.setText(messages.get(position).getFromAccount());
+        hv.name.setText(messages.get(position).getFromNick());
         hv.nameTalk.setText(messages.get(position).getContent());
         return convertView;
     }
