@@ -20,6 +20,12 @@
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:id="@+id/lv_haoyou"></com.example.a52374.myapplication.myview.MyListView>
+    <!--<com.example.a52374.myapplication.myview.MyExpandable-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/exp"-->
+        <!--&gt;</com.example.a52374.myapplication.myview.MyExpandable>-->
+
 </LinearLayout>
     </ScrollView>
 </LinearLayout>
